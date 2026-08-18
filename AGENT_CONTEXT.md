@@ -19,8 +19,9 @@ something like *"update"* or *"weekly briefing"*.
 
 Your job in that session:
 
-1. Read `reports/latest.md` from the repo (raw URL below) — the pipeline has
-   already generated the projections.
+1. Read `reports/latest.md` from the repo (raw URL below). If the user's
+   `team_id` is set, **Section 0 is the transfer plan** — roll / transfer /
+   hit, with the full options table. That is the headline answer.
 2. Web-search for **breaking team news** the pipeline cannot see: press
    conferences, injuries, predicted lineups, suspensions.
 3. Give them: **XI, captain, transfer, chip call, main risks** — concisely.
@@ -103,7 +104,10 @@ src/
   minutes.py           Minutes model. Validated. See §5.
   rates.py             Empirical-Bayes per-90 rates + DefCon threshold model.
   project.py           Assembles points from components. Full audit trail.
-  squad.py             Integer programme (PuLP/CBC). All FPL constraints.
+  squad.py             Integer programme - builds a squad FROM SCRATCH.
+  team_state.py        Reads the user's actual squad/bank/free transfers
+                       from PUBLIC endpoints (team ID only, no login).
+  transfers.py         Transfer optimiser: roll vs 1 transfer vs taking a hit.
   report.py            Writes reports/latest.md.
   rules_check.py       Alarms if FPL changes rules underneath us.
 .github/workflows/
@@ -178,9 +182,22 @@ Every projection carries `c_app`, `c_goals`, `c_assists`, `c_cs`, `c_saves`,
    all four seasons showed it was one outlier. "Correcting" it would have made
    the model worse.** Shrinkage was tested and made Brier monotonically worse, so
    none is applied.
-6. **No multi-gameweek transfer planning, no chip option-value model.**
-   Chips are American options — using one forfeits the best remaining
-   opportunity. The GW19 expiry makes this computable and it is not yet built.
+6. **Transfer optimisation is ONE gameweek deep.** `transfers.py` solves for
+   0/1/2/3 transfers and compares net xP after hits, but only for the next
+   gameweek. Because of that the decision thresholds are deliberately
+   conservative: a transfer must beat rolling by 0.4 xP, and a -4 hit must
+   clear 2.0 xP. A transfer that looks marginal over one week is often clearly
+   right over five. **When advising, say this out loud** and use your own
+   judgement on fixtures over the next 4-6 GWs.
+7. **No chip option-value model.** Chips are American options — using one
+   forfeits the best remaining opportunity. First set expires GW19, which makes
+   this computable. Not built.
+8. **Free transfers are RECONSTRUCTED**, not read directly (the public API does
+   not expose them). `team_state._free_transfers` replays transfer history.
+   It can drift. Always tell the user to confirm against the FPL app.
+9. **Selling prices are approximated** where purchase price is unknown. FPL
+   refunds only 50% of profit, rounded down. Reconstructed from the transfers
+   endpoint where possible, else current price is used.
 
 ---
 
