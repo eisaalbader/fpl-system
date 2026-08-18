@@ -26,6 +26,8 @@ import fpl_api      # noqa: E402
 import project      # noqa: E402
 import pandas as pd  # noqa: E402
 import squad as squad_mod  # noqa: E402
+import team_state as TS  # noqa: E402
+import transfers as TR  # noqa: E402
 
 logging.basicConfig(level=logging.INFO, format="%(asctime)s %(levelname)s %(message)s")
 log = logging.getLogger("report")
@@ -90,6 +92,27 @@ def build(gw: int = None) -> Path:
     players = project.build_projections(bs, fixtures, gw, hist)
 
     opt_cfg = settings.get("optimiser", {}) or {}
+
+    # ---- try TRANSFER mode (needs team_id and a started gameweek) ----
+    team_id = ((settings.get("fpl") or {}).get("team_id"))
+    state = TS.get_state(team_id, bs) if team_id else {"available": False,
+             "reason": "team_id not set in config/settings.yaml"}
+    transfer_opts, decision = None, None
+    if state.get("available"):
+        try:
+            transfer_opts = TR.optimise_transfers(
+                state["squad"], players,
+                bank=state["bank"], free_transfers=state["free_transfers"],
+                squad_size=rules["squad"]["composition"],
+                max_per_club=rules["squad"]["max_per_club"],
+                formation_min=rules["squad"]["formation_min"],
+                locked=opt_cfg.get("locked_players") or [],
+                banned=opt_cfg.get("banned_players") or [])
+            decision = TR.decision_rule(transfer_opts, state["free_transfers"])
+        except Exception as e:
+            log.warning("transfer optimisation failed: %s", e)
+            state["transfer_error"] = str(e)
+
     result = squad_mod.optimise(
         players,
         budget=float(opt_cfg.get("budget", 100.0)),
@@ -117,6 +140,58 @@ def build(gw: int = None) -> Path:
     A("")
     A(_staleness())
     A("")
+
+    # ---------------- TRANSFER PLAN ----------------
+    if decision and decision.get("choice"):
+        ch = decision["choice"]
+        A("## 0. Transfer plan — what to do this week")
+        A("")
+        A(f"**Squad value £{state['squad_sell_value']:.1f}m · "
+          f"Bank £{state['bank']:.1f}m · "
+          f"Free transfers {state['free_transfers']}**")
+        A("")
+        A(f"### → {decision['action'].upper()}")
+        A("")
+        A(decision["reason"])
+        A("")
+        if ch["out"]:
+            A("| OUT | Sell for | IN | Cost | xP |")
+            A("|---|--:|---|--:|--:|")
+            for o, i in zip(ch["out"], ch["in"]):
+                A(f"| {o['name']} ({o['team']}) | {o['sell_price']:.1f} | "
+                  f"{i['name']} ({i['team']}) | {i['cost']:.1f} | {i['xp']:.2f} |")
+            A("")
+        A("**All options considered:**")
+        A("")
+        A("| Transfers | Hit | Gross xP | Net xP |")
+        A("|--:|--:|--:|--:|")
+        for r in sorted(transfer_opts, key=lambda r: r["n_transfers"]):
+            mark = " ←" if r["n_transfers"] == ch["n_transfers"] else ""
+            A(f"| {r['n_transfers']}{mark} | {-r['hit_cost']:.0f} | "
+              f"{r['gross_xp']:.2f} | **{r['net_xp']:.2f}** |")
+        A("")
+        A("*Net xP is for THIS gameweek only. A transfer that looks marginal "
+          "here may be clearly right over five weeks — multi-gameweek planning "
+          "is not yet built, which is why the thresholds are conservative.*")
+        if state.get("prices_approximated"):
+            A("")
+            A(f"*{state['prices_approximated']} selling prices approximated "
+              f"from current price (purchase price unknown). Confirm in the app "
+              f"before making a transfer that depends on exact funds.*")
+        A("")
+        A("---")
+        A("")
+    elif team_id:
+        A(f"> **Transfer mode unavailable:** "
+          f"{state.get('transfer_error') or state.get('reason')}")
+        A("> Showing a fresh optimal squad instead — ignore it if you already "
+          "have a team.")
+        A("")
+    else:
+        A("> **No `team_id` set** in `config/settings.yaml`, so this is a "
+          "fresh-squad build, not a transfer plan. Add your team ID to get "
+          "week-by-week transfer advice.")
+        A("")
 
     if is_gw1:
         A("> ### ⚠️ What is and is not modelled here")

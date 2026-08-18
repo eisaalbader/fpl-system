@@ -149,3 +149,8 @@ def position_map(bs: Dict[str, Any]) -> Dict[int, str]:
         et["id"]: et.get("singular_name_short", str(et["id"]))
         for et in bs.get("element_types", [])
     }
+
+
+def entry_history(entry_id: int) -> Dict[str, Any]:
+    """Per-GW history plus the chips already used."""
+    return _get(EP["entry_history"].format(entry_id=entry_id))
