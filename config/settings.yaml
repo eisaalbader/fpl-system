@@ -1,0 +1,13 @@
+# Your settings. The ONLY file you need to edit.
+fpl:
+  team_id: null          # <-- your FPL team ID (the number in your FPL URL)
+  # NO email/password. Ever. Public endpoints only.
+
+optimiser:
+  budget: 100.0
+  locked_players: []     # FPL ids you insist on owning
+  banned_players: []     # FPL ids you refuse to own
+
+report:
+  top_n_by_position: 12
+  stale_hours: 6         # warn loudly if data is older than this

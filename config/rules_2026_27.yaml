@@ -1,0 +1,81 @@
+# FPL Rules - 2026/27
+# NEVER hardcode these in application logic. src/rules_check.py diffs this
+# against the live /api/game-settings/ and raises if they disagree.
+#
+# [V] = verified against official Premier League sources, 17 Aug 2026
+# [?] = secondary source; confirm against game-settings before trusting
+
+season: "2026-27"
+verified_utc: "2026-08-17"
+
+squad:                      # [V]
+  size: 15
+  budget: 100.0
+  max_per_club: 3
+  composition: {GKP: 2, DEF: 5, MID: 5, FWD: 3}
+  xi_size: 11
+  formation_min: {GKP: 1, DEF: 3, MID: 2, FWD: 1}
+
+scoring:                    # [?] confirm numeric values via game-settings
+  appearance_under_60: 1
+  appearance_60_plus: 2
+  goal: {GKP: 10, DEF: 6, MID: 5, FWD: 4}
+  assist: 3
+  clean_sheet: {GKP: 4, DEF: 4, MID: 1, FWD: 0}
+  saves_per_point: 3
+  penalty_save: 5
+  penalty_miss: -2
+  goals_conceded_per_minus1: 2
+  yellow_card: -1
+  red_card: -3
+  own_goal: -2
+
+defensive_contribution:     # [V] retained for 2026/27
+  points: 2
+  cap_per_match: 2          # THRESHOLD event, not linear. Model P(count >= T).
+  defender: {threshold: 10, actions: [clearances, blocks, interceptions, tackles]}
+  mid_fwd:  {threshold: 12, actions: [clearances, blocks, interceptions, tackles, recoveries]}
+
+bps_2026_27_changes:        # [V] historical BPS is now MISCALIBRATED
+  tackled_penalty: removed          # was -1 BPS
+  cbi_per_bps: 3                    # was 1 BPS per 2 CBI
+  gk_save_any: 2                    # flat 2 BPS for any save
+  gk_save_inside_box_bonus: 1
+  gk_save_outside_box: removed
+  gk_big_chance_save_bonus: 1       # new
+  penalty_save: 7                   # was 8
+  note: "Rebuild BPS from match components. Do NOT fit to historical bonus."
+
+bonus:                      # [V]
+  awards: [3, 2, 1]
+  tie_first: "both get 3, next gets 1"
+  tie_second: "3, then 2 and 2"
+  tie_third: "3, 2, then 1 and 1"
+
+transfers:                  # [V]
+  free_per_gw: 1
+  max_banked: 5
+  hit_cost: -4
+  december_bonus_transfers: false   # no AFCON in 2026/27
+
+chips:                      # [V] TWO SETS
+  types: [wildcard, free_hit, triple_captain, bench_boost]
+  sets: 2
+  first_set_expiry_gw: 19
+  first_set_expiry_utc: "2027-01-02T13:30:00Z"
+  carryover: false          # unused first-half chips are LOST
+  second_set_starts_gw: 20
+
+gameweek:                   # [V] CHANGED for 2026/27
+  finalisation: "09:00 UK on the day after the GW's final match"
+  provisional_bonus_after_minutes: 20
+  live_points: true
+  official_price_predictor: true    # daily 00:00 UK - do NOT rebuild this
+
+season_dates:               # [V]
+  gw1_deadline_utc: "2026-08-21T17:30:00Z"
+  season_end: "2027-05-30"
+  promoted: [Coventry City, Hull City, Ipswich Town]
+
+context_flags:
+  world_cup_2026: "Ran to mid-July 2026. Short pre-season for deep-run players. Real minutes/injury factor for GW1-6."

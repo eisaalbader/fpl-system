@@ -1,0 +1,50 @@
+name: collect
+
+# The point-in-time logger. This is the irreplaceable piece.
+# GitHub Actions is free and unlimited on PUBLIC repos.
+on:
+  schedule:
+    # Hourly, plus every 15 min in the Friday/Saturday pre-deadline windows.
+    # NOTE: all times UTC. GitHub cron can run 10-30 min late under load.
+    - cron: '7 * * * *'
+    - cron: '*/15 13-18 * * 5'   # Friday afternoon (press conferences)
+    - cron: '*/15 08-11 * * 6'   # Saturday morning (Sat 11:00 deadlines)
+  workflow_dispatch:              # lets you run it manually from the web UI
+
+concurrency:
+  group: collect
+  cancel-in-progress: false
+
+jobs:
+  snapshot:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+          cache: pip
+
+      - run: pip install -r requirements.txt
+
+      - name: Collect snapshot
+        run: python src/collect.py
+
+      - name: Commit
+        run: |
+          git config user.name  "fpl-collector"
+          git config user.email "actions@github.com"
+          git add data/
+          if git diff --staged --quiet; then
+            echo "no changes to commit"
+          else
+            git commit -m "snapshot $(date -u +'%Y-%m-%dT%H:%MZ')"
+            # Another run may have pushed while we worked. Rebase and retry.
+            for i in 1 2 3; do
+              git pull --rebase --autostash origin ${{ github.ref_name }} && \
+              git push && break || sleep 10
+            done
+          fi
