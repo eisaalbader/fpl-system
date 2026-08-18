@@ -1,33 +1,37 @@
 # GW1 Decision Report
 
-Generated **2026-08-18 13:51 UTC** · Deadline **2026-08-21T17:30:00Z**
+Generated **2026-08-18 14:40 UTC** · Deadline **2026-08-21T17:30:00Z**
 
-🟢 Data is 0.0h old.
+🟢 Data is 0.8h old.
 
-> ### ⚠️ Read this before using any number below
-> There is **zero current-season data**. Every projection here is a prior built from last season's per-90 rates plus FPL's own `ep_next`. The percentile spread is a crude parametric guess, **not** a Monte Carlo distribution.
+> ### ⚠️ What is and is not modelled here
+> There is **zero current-season Premier League data**. Everything below is built from 7 seasons of history (185,964 player-gameweek rows), not from current form.
 > 
-> Not yet modelled: defensive contributions, bonus points, clean-sheet probability, minutes distribution. These need match-level data that does not exist until GW3.
+> **Modelled:** minutes distribution over {0, 1-59, 60-89, 90} (validated out-of-sample: Brier 0.173 vs 0.232 for a price heuristic — 25.7% better across 4 held-out seasons); goal and assist rates with empirical-Bayes shrinkage; clean-sheet probability; goalkeeper saves; defensive contributions as a threshold model.
 > 
-> **Confidence in this report as a whole: LOW.** It is a defensible starting squad, not a forecast.
+> **Not modelled:** joint Monte Carlo (so ceiling/floor are parametric, not sampled — they ignore that a team's defenders share clean-sheet outcomes); bonus rebuilt from the new 2026/27 BPS components; multi-gameweek planning; chip timing.
+> 
+> **Bonus is damped by 40%** because the 2026/27 BPS changed (CBI now 1 point per 3 actions rather than per 2, tackled penalty removed, keeper saves restructured). Historical bonus rates are miscalibrated by construction.
+> 
+> **Overall confidence: MODERATE.** The minutes and rate models are real and measured. Everything downstream of them is v1.
 
 ## 1. Recommended XI
 
 Formation **5-4-1** · Squad cost **£100.0m** · XI expected points (captain doubled) **52.92**
 
-| Player | Team | £ | xP | Mins | Own% | Conf | Note |
-|---|---|--:|--:|--:|--:|---|---|
-| Pickford | EVE | 5.5 | 3.83 | 80 | 8.5 | medium |  |
-| Gabriel | ARS | 8.0 | 4.74 | 83 | 28.7 | medium |  |
-| Senesi | TOT | 6.0 | 4.48 | 81 | 9.5 | medium |  |
-| Tarkowski | EVE | 6.0 | 4.47 | 81 | 9.5 | medium |  |
-| Virgil | LIV | 6.5 | 4.38 | 83 | 17.9 | medium |  |
-| Guéhi | MCI | 6.0 | 4.27 | 80 | 20.2 | medium |  |
-| B.Fernandes | MUN | 12.0 | 5.06 | 82 | 48.9 | medium |  |
-| Semenyo | MCI | 8.5 | 4.42 | 79 | 26.5 | medium |  |
-| Anderson | MCI | 6.5 | 4.20 | 73 | 9.6 | medium |  |
-| Rice | ARS | 7.5 | 4.12 | 75 | 20.0 | medium |  |
-| Thiago | BRE | 8.0 | 3.89 | 70 | 17.6 | medium |  |
+| Player | Team | £ | xP | P(60+) | Mins | DefCon | Own% | Conf | Note |
+|---|---|--:|--:|--:|--:|--:|--:|---|---|
+| Pickford | EVE | 5.5 | 3.83 | 0.89 | 80 | - | 8.5 | medium |  |
+| Gabriel | ARS | 8.0 | 4.74 | 0.93 | 83 | 0.36 | 28.7 | medium |  |
+| Senesi | TOT | 6.0 | 4.48 | 0.90 | 81 | 0.56 | 9.5 | medium |  |
+| Tarkowski | EVE | 6.0 | 4.47 | 0.90 | 81 | 0.45 | 9.5 | medium |  |
+| Virgil | LIV | 6.5 | 4.38 | 0.92 | 83 | 0.38 | 17.9 | medium |  |
+| Guéhi | MCI | 6.0 | 4.27 | 0.89 | 80 | 0.26 | 20.2 | medium |  |
+| B.Fernandes | MUN | 12.0 | 5.06 | 0.95 | 82 | 0.15 | 48.9 | medium |  |
+| Semenyo | MCI | 8.5 | 4.42 | 0.90 | 79 | 0.06 | 26.4 | medium |  |
+| Anderson | MCI | 6.5 | 4.20 | 0.81 | 73 | 0.49 | 9.6 | medium |  |
+| Rice | ARS | 7.5 | 4.12 | 0.85 | 75 | 0.30 | 19.9 | medium |  |
+| Thiago | BRE | 8.0 | 3.89 | 0.76 | 70 | 0.03 | 17.6 | medium |  |
 
 ## 2. Bench (in auto-sub order)
 
@@ -47,7 +51,14 @@ Formation **5-4-1** · Squad cost **£100.0m** · XI expected points (captain do
 | B.Fernandes | 5.06 | 0.0 | 11.6 | 82 | 48.9 |
 | Gabriel (vice) | 4.74 | 0.1 | 9.4 | 83 | 28.7 |
 
-*Selected on expected points only. Ceiling/floor are parametric estimates. Ownership-adjusted and rank-relative captaincy arrives once the joint simulation is built (GW4+).*
+
+**Where the captain's points come from:**
+
+| Appearance | Goals | Assists | Clean sheet | Saves | DefCon | Bonus |
+|--:|--:|--:|--:|--:|--:|--:|
+| 1.95 | 0.93 | 1.10 | 0.20 | 0.00 | 0.31 | 0.57 |
+
+*Selected on expected points only. Ceiling/floor are parametric, not sampled. Ownership-adjusted and rank-relative captaincy needs the joint simulation (not yet built).*
 
 ## 4. Players flagged in FPL's own news field
 
@@ -71,10 +82,11 @@ Formation **5-4-1** · Squad cost **£100.0m** · XI expected points (captain do
 
 ## 5. Biggest risks in this recommendation
 
-1. **Minutes.** The minutes model is a price-tier prior, not a model. Any player who is rotated or subbed early breaks the projection.
+1. **Minutes at the top end.** The model is measured 25.7% better than a price heuristic, but GW1 top-end calibration swings a lot season to season (+0.047, +0.065, +0.037, -0.103 across four held-out GW1s). For players shown above P(60+) = 0.6, treat the number as roughly +/- 0.07. Managers experiment in GW1.
 2. **New signings and promoted-club players** have no usable prior.
-3. **No bonus or DefCon modelling.** For defenders especially, this understates points for high-CBIT players and overstates ball-playing centre-backs under the new 2026/27 BPS.
-4. **Fixture multiplier is crude** — derived from FPL's own strength ratings, which at GW1 are themselves last season's guesses.
+3. **DefCon rests on ONE season.** Defensive contributions only exist from 2025/26, so there is no cross-season validation. Rates are shrunk hard, but treat DefCon columns as the least reliable numbers in this report.
+4. **Clean sheets use FPL's own strength ratings**, which at GW1 are themselves last season's guesses. Bookmaker odds would be sharper.
+5. **Correlation is ignored.** Owning three defenders from one club is riskier than the individual numbers suggest — they all live or die on the same clean sheet. The joint simulation will fix this.
 
 ## 6. News watchlist before the deadline
 
@@ -92,10 +104,12 @@ Check these before locking in:
 | Point-in-time data logging | ✅ live | now |
 | Rules engine + drift alerts | ✅ live | now |
 | Squad optimisation (IP) | ✅ live | now |
-| Minutes model | ❌ prior only | GW3 |
-| Clean sheet / goals / assists split | ❌ | GW3 |
-| Defensive contribution model | ❌ | GW4 |
-| BPS rebuilt from components | ❌ | GW4 |
+| Minutes model (7 seasons, validated) | ✅ live | now |
+| Shrunk goal / assist / save rates | ✅ live | now |
+| Clean sheet probability | ✅ v1 (strength-based) | now |
+| Defensive contribution model | ✅ live (1 season of data) | now |
+| Clean sheet from bookmaker odds | ❌ | GW3 |
+| BPS rebuilt from 2026/27 components | ❌ | GW4 |
 | Monte Carlo joint distribution | ❌ | GW5 |
 | Multi-GW transfer planning | ❌ | GW6 |
 | Chip option-value model | ❌ | GW8 |
@@ -109,68 +123,68 @@ Check these before locking in:
 
 ### GKP
 
-| Player | Team | £ | xP | Mins | Own% | Conf | Note |
-|---|---|--:|--:|--:|--:|---|---|
-| Pickford | EVE | 5.5 | 3.83 | 80 | 8.5 | medium |  |
-| Raya | ARS | 6.0 | 3.79 | 82 | 34.2 | medium |  |
-| Donnarumma | MCI | 5.5 | 3.77 | 79 | 9.7 | medium |  |
-| Kelleher | BRE | 5.0 | 3.67 | 75 | 5.9 | medium |  |
-| Verbruggen | BHA | 4.5 | 3.55 | 73 | 19.0 | medium |  |
-| Henderson | CRY | 5.0 | 3.50 | 76 | 3.2 | medium |  |
-| Leno | FUL | 4.5 | 3.44 | 72 | 3.2 | medium |  |
-| Roefs | SUN | 5.0 | 3.40 | 72 | 4.8 | medium |  |
-| Petrović | BOU | 4.5 | 3.34 | 73 | 3.6 | medium |  |
-| Sánchez | CHE | 5.0 | 3.34 | 72 | 2.2 | medium |  |
-| Lammens | MUN | 5.0 | 3.15 | 71 | 18.4 | medium |  |
-| Martinez | AVL | 5.0 | 3.14 | 67 | 4.8 | medium |  |
+| Player | Team | £ | xP | P(60+) | Mins | DefCon | Own% | Conf | Note |
+|---|---|--:|--:|--:|--:|--:|--:|---|---|
+| Pickford | EVE | 5.5 | 3.83 | 0.89 | 80 | - | 8.5 | medium |  |
+| Raya | ARS | 6.0 | 3.79 | 0.92 | 82 | - | 34.2 | medium |  |
+| Donnarumma | MCI | 5.5 | 3.77 | 0.88 | 79 | - | 9.7 | medium |  |
+| Kelleher | BRE | 5.0 | 3.67 | 0.84 | 75 | - | 5.9 | medium |  |
+| Verbruggen | BHA | 4.5 | 3.55 | 0.81 | 73 | - | 19.1 | medium |  |
+| Henderson | CRY | 5.0 | 3.50 | 0.85 | 76 | - | 3.2 | medium |  |
+| Leno | FUL | 4.5 | 3.44 | 0.80 | 72 | - | 3.3 | medium |  |
+| Roefs | SUN | 5.0 | 3.40 | 0.81 | 72 | - | 4.8 | medium |  |
+| Petrović | BOU | 4.5 | 3.34 | 0.81 | 73 | - | 3.6 | medium |  |
+| Sánchez | CHE | 5.0 | 3.34 | 0.80 | 72 | - | 2.2 | medium |  |
+| Lammens | MUN | 5.0 | 3.15 | 0.79 | 71 | - | 18.4 | medium |  |
+| Martinez | AVL | 5.0 | 3.14 | 0.74 | 67 | - | 4.8 | medium |  |
 
 ### DEF
 
-| Player | Team | £ | xP | Mins | Own% | Conf | Note |
-|---|---|--:|--:|--:|--:|---|---|
-| Gabriel | ARS | 8.0 | 4.74 | 83 | 28.7 | medium |  |
-| Senesi | TOT | 6.0 | 4.48 | 81 | 9.5 | medium |  |
-| Tarkowski | EVE | 6.0 | 4.47 | 81 | 9.5 | medium |  |
-| Virgil | LIV | 6.5 | 4.38 | 83 | 17.9 | medium |  |
-| Guéhi | MCI | 6.0 | 4.27 | 80 | 20.2 | medium |  |
-| Lacroix | CHE | 6.0 | 4.21 | 79 | 10.5 | medium |  |
-| O'Reilly | MCI | 6.5 | 3.97 | 77 | 21.5 | medium |  |
-| Collins | BRE | 5.5 | 3.93 | 74 | 2.0 | medium |  |
-| Truffert | BOU | 5.5 | 3.90 | 79 | 4.9 | medium |  |
-| Van Hecke | TOT | 5.0 | 3.82 | 75 | 8.9 | medium |  |
-| Milenković | NFO | 5.5 | 3.79 | 79 | 2.2 | medium |  |
-| Thiaw | NEW | 5.0 | 3.69 | 70 | 1.9 | medium |  |
+| Player | Team | £ | xP | P(60+) | Mins | DefCon | Own% | Conf | Note |
+|---|---|--:|--:|--:|--:|--:|--:|---|---|
+| Gabriel | ARS | 8.0 | 4.74 | 0.93 | 83 | 0.36 | 28.7 | medium |  |
+| Senesi | TOT | 6.0 | 4.48 | 0.90 | 81 | 0.56 | 9.5 | medium |  |
+| Tarkowski | EVE | 6.0 | 4.47 | 0.90 | 81 | 0.45 | 9.5 | medium |  |
+| Virgil | LIV | 6.5 | 4.38 | 0.92 | 83 | 0.38 | 17.9 | medium |  |
+| Guéhi | MCI | 6.0 | 4.27 | 0.89 | 80 | 0.26 | 20.2 | medium |  |
+| Lacroix | CHE | 6.0 | 4.21 | 0.88 | 79 | 0.49 | 10.5 | medium |  |
+| O'Reilly | MCI | 6.5 | 3.97 | 0.86 | 77 | 0.10 | 21.5 | medium |  |
+| Collins | BRE | 5.5 | 3.93 | 0.82 | 74 | 0.37 | 2.0 | medium |  |
+| Truffert | BOU | 5.5 | 3.90 | 0.88 | 79 | 0.26 | 4.9 | medium |  |
+| Van Hecke | TOT | 5.0 | 3.82 | 0.83 | 75 | 0.31 | 8.9 | medium |  |
+| Milenković | NFO | 5.5 | 3.79 | 0.88 | 79 | 0.28 | 2.2 | medium |  |
+| Thiaw | NEW | 5.0 | 3.69 | 0.78 | 70 | 0.29 | 1.9 | medium |  |
 
 ### MID
 
-| Player | Team | £ | xP | Mins | Own% | Conf | Note |
-|---|---|--:|--:|--:|--:|---|---|
-| B.Fernandes | MUN | 12.0 | 5.06 | 82 | 48.9 | medium |  |
-| Semenyo | MCI | 8.5 | 4.42 | 79 | 26.5 | medium |  |
-| Anderson | MCI | 6.5 | 4.20 | 73 | 9.6 | medium |  |
-| Rice | ARS | 7.5 | 4.12 | 75 | 20.0 | medium |  |
-| Saka | ARS | 9.5 | 4.08 | 74 | 9.6 | medium |  |
-| Gibbs-White | NFO | 8.0 | 4.07 | 76 | 11.9 | medium |  |
-| Szoboszlai | LIV | 7.0 | 3.82 | 74 | 41.3 | medium |  |
-| Palmer | CHE | 9.5 | 3.81 | 73 | 10.6 | medium |  |
-| Rogers | CHE | 7.5 | 3.80 | 76 | 26.6 | medium |  |
-| Cunha | MUN | 8.0 | 3.79 | 72 | 11.3 | medium |  |
-| Bruno G. | ARS | 7.0 | 3.74 | 65 | 9.0 | medium |  |
-| Enzo | CHE | 7.0 | 3.71 | 74 | 5.3 | medium |  |
+| Player | Team | £ | xP | P(60+) | Mins | DefCon | Own% | Conf | Note |
+|---|---|--:|--:|--:|--:|--:|--:|---|---|
+| B.Fernandes | MUN | 12.0 | 5.06 | 0.95 | 82 | 0.15 | 48.9 | medium |  |
+| Semenyo | MCI | 8.5 | 4.42 | 0.90 | 79 | 0.06 | 26.4 | medium |  |
+| Anderson | MCI | 6.5 | 4.20 | 0.81 | 73 | 0.49 | 9.6 | medium |  |
+| Rice | ARS | 7.5 | 4.12 | 0.85 | 75 | 0.30 | 19.9 | medium |  |
+| Saka | ARS | 9.5 | 4.08 | 0.84 | 74 | 0.09 | 9.6 | medium |  |
+| Gibbs-White | NFO | 8.0 | 4.07 | 0.86 | 76 | 0.02 | 11.9 | medium |  |
+| Szoboszlai | LIV | 7.0 | 3.82 | 0.83 | 74 | 0.19 | 41.3 | medium |  |
+| Palmer | CHE | 9.5 | 3.81 | 0.83 | 73 | 0.04 | 10.6 | medium |  |
+| Rogers | CHE | 7.5 | 3.80 | 0.86 | 76 | 0.05 | 26.6 | medium |  |
+| Cunha | MUN | 8.0 | 3.79 | 0.81 | 72 | 0.09 | 11.3 | medium |  |
+| Bruno G. | ARS | 7.0 | 3.74 | 0.72 | 65 | 0.15 | 9.0 | medium |  |
+| Enzo | CHE | 7.0 | 3.71 | 0.82 | 74 | 0.07 | 5.3 | medium |  |
 
 ### FWD
 
-| Player | Team | £ | xP | Mins | Own% | Conf | Note |
-|---|---|--:|--:|--:|--:|---|---|
-| Haaland | MCI | 15.5 | 5.24 | 81 | 70.5 | medium |  |
-| Thiago | BRE | 8.0 | 3.89 | 70 | 17.6 | medium |  |
-| Watkins | AVL | 8.0 | 3.54 | 65 | 12.4 | medium |  |
-| João Pedro | CHE | 7.5 | 3.48 | 60 | 60.0 | low |  |
-| Gyökeres | ARS | 7.5 | 3.00 | 54 | 10.9 | low |  |
-| Calvert-Lewin | LEE | 6.0 | 2.55 | 49 | 27.4 | low |  |
-| Isak | LIV | 9.0 | 2.45 | 45 | 15.4 | low |  |
-| Mateta | CRY | 6.5 | 2.39 | 45 | 6.1 | low |  |
-| Evanilson | BOU | 6.0 | 2.34 | 49 | 2.2 | low |  |
-| Welbeck | CHE | 6.0 | 2.24 | 41 | 2.2 | low |  |
-| Igor Jesus | NFO | 6.0 | 2.06 | 41 | 5.2 | low |  |
-| Richarlison | TOT | 6.0 | 2.01 | 34 | 2.6 | low |  |
+| Player | Team | £ | xP | P(60+) | Mins | DefCon | Own% | Conf | Note |
+|---|---|--:|--:|--:|--:|--:|--:|---|---|
+| Haaland | MCI | 15.5 | 5.24 | 0.94 | 81 | - | 70.5 | medium |  |
+| Thiago | BRE | 8.0 | 3.89 | 0.76 | 70 | 0.03 | 17.6 | medium |  |
+| Watkins | AVL | 8.0 | 3.54 | 0.71 | 65 | - | 12.4 | medium |  |
+| João Pedro | CHE | 7.5 | 3.48 | 0.64 | 60 | - | 60.0 | low |  |
+| Gyökeres | ARS | 7.5 | 3.00 | 0.57 | 54 | - | 10.9 | low |  |
+| Calvert-Lewin | LEE | 6.0 | 2.55 | 0.50 | 49 | - | 27.4 | low |  |
+| Isak | LIV | 9.0 | 2.45 | 0.43 | 45 | - | 15.4 | low |  |
+| Mateta | CRY | 6.5 | 2.39 | 0.45 | 45 | - | 6.1 | low |  |
+| Evanilson | BOU | 6.0 | 2.34 | 0.51 | 49 | - | 2.2 | low |  |
+| Welbeck | CHE | 6.0 | 2.24 | 0.40 | 41 | - | 2.2 | low |  |
+| Igor Jesus | NFO | 6.0 | 2.06 | 0.42 | 41 | - | 5.2 | low |  |
+| Richarlison | TOT | 6.0 | 2.01 | 0.32 | 34 | 0.02 | 2.6 | low |  |
