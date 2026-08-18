@@ -59,13 +59,15 @@ def _staleness() -> str:
 
 
 def _fmt_players(rows: List[Dict[str, Any]], n: int) -> str:
-    out = ["| Player | Team | £ | xP | Mins | Own% | Conf | Note |",
-           "|---|---|--:|--:|--:|--:|---|---|"]
+    out = ["| Player | Team | £ | xP | P(60+) | Mins | DefCon | Own% | Conf | Note |",
+           "|---|---|--:|--:|--:|--:|--:|--:|---|---|"]
     for p in rows[:n]:
-        note = p["news"][:44] if p["news"] else ("no prior" if not p["has_prior"] else "")
+        note = p["news"][:36] if p["news"] else ("no prior" if not p["has_prior"] else "")
+        dc = f"{p.get('p_defcon', 0):.2f}" if p.get("p_defcon", 0) > 0.01 else "-"
         out.append(
             f"| {p['name']} | {p['team']} | {p['cost']:.1f} | {p['xp']:.2f} | "
-            f"{p['exp_minutes']:.0f} | {p['own']:.1f} | {p['confidence']} | {note} |"
+            f"{p.get('p_start', 0):.2f} | {p['exp_minutes']:.0f} | {dc} | "
+            f"{p['own']:.1f} | {p['confidence']} | {note} |"
         )
     return "\n".join(out)
 
@@ -117,20 +119,31 @@ def build(gw: int = None) -> Path:
     A("")
 
     if is_gw1:
-        A("> ### ⚠️ Read this before using any number below")
-        A("> There is **zero current-season data**. Every projection here is a "
-          "prior built from last season's per-90 rates plus FPL's own `ep_next`. "
-          "The percentile spread is a crude parametric guess, **not** a Monte "
-          "Carlo distribution.")
+        A("> ### ⚠️ What is and is not modelled here")
+        A("> There is **zero current-season Premier League data**. Everything "
+          "below is built from 7 seasons of history (185,964 player-gameweek "
+          "rows), not from current form.")
         A("> ")
-        A("> Not yet modelled: defensive contributions, bonus points, clean-sheet "
-          "probability, minutes distribution. These need match-level data that "
-          "does not exist until GW3.")
+        A("> **Modelled:** minutes distribution over {0, 1-59, 60-89, 90} "
+          "(validated out-of-sample: Brier 0.173 vs 0.232 for a price "
+          "heuristic — 25.7% better across 4 held-out seasons); goal and "
+          "assist rates with empirical-Bayes shrinkage; clean-sheet "
+          "probability; goalkeeper saves; defensive contributions as a "
+          "threshold model.")
         A("> ")
-        A("> **Confidence in this report as a whole: LOW.** It is a defensible "
-          "starting squad, not a forecast.")
+        A("> **Not modelled:** joint Monte Carlo (so ceiling/floor are "
+          "parametric, not sampled — they ignore that a team's defenders "
+          "share clean-sheet outcomes); bonus rebuilt from the new 2026/27 "
+          "BPS components; multi-gameweek planning; chip timing.")
+        A("> ")
+        A("> **Bonus is damped by 40%** because the 2026/27 BPS changed "
+          "(CBI now 1 point per 3 actions rather than per 2, tackled penalty "
+          "removed, keeper saves restructured). Historical bonus rates are "
+          "miscalibrated by construction.")
+        A("> ")
+        A("> **Overall confidence: MODERATE.** The minutes and rate models are "
+          "real and measured. Everything downstream of them is v1.")
         A("")
-
     A("## 1. Recommended XI")
     A("")
     A(f"Formation **{result['formation']}** · Squad cost **£{result['total_cost']}m** · "
@@ -164,9 +177,19 @@ def build(gw: int = None) -> Path:
     A(f"| {v['name']} (vice) | {v['xp']:.2f} | {v['p10']:.1f} | {v['p90']:.1f} | "
       f"{v['exp_minutes']:.0f} | {v['own']:.1f} |")
     A("")
-    A("*Selected on expected points only. Ceiling/floor are parametric estimates. "
-      "Ownership-adjusted and rank-relative captaincy arrives once the joint "
-      "simulation is built (GW4+).*")
+    A("")
+    A("**Where the captain's points come from:**")
+    A("")
+    A("| Appearance | Goals | Assists | Clean sheet | Saves | DefCon | Bonus |")
+    A("|--:|--:|--:|--:|--:|--:|--:|")
+    A(f"| {c.get('c_app',0):.2f} | {c.get('c_goals',0):.2f} | "
+      f"{c.get('c_assists',0):.2f} | {c.get('c_cs',0):.2f} | "
+      f"{c.get('c_saves',0):.2f} | {c.get('c_defcon',0):.2f} | "
+      f"{c.get('c_bonus',0):.2f} |")
+    A("")
+    A("*Selected on expected points only. Ceiling/floor are parametric, not "
+      "sampled. Ownership-adjusted and rank-relative captaincy needs the joint "
+      "simulation (not yet built).*")
     A("")
 
     A("## 4. Players flagged in FPL's own news field")
@@ -183,19 +206,26 @@ def build(gw: int = None) -> Path:
 
     A("## 5. Biggest risks in this recommendation")
     A("")
-    A("1. **Minutes.** The minutes model is a price-tier prior, not a model. "
-      "Any player who is rotated or subbed early breaks the projection.")
+    A("1. **Minutes at the top end.** The model is measured 25.7% better than "
+      "a price heuristic, but GW1 top-end calibration swings a lot "
+      "season to season (+0.047, +0.065, +0.037, -0.103 across four held-out "
+      "GW1s). For players shown above P(60+) = 0.6, treat the number as "
+      "roughly +/- 0.07. Managers experiment in GW1.")
     if no_prior:
         names = ", ".join(f"{p['name']} ({p['team']})" for p in no_prior[:8])
         A(f"2. **Players with no usable history** — new signings, promoted-club "
           f"players, youth. These are effectively unknown: {names}")
     else:
         A("2. **New signings and promoted-club players** have no usable prior.")
-    A("3. **No bonus or DefCon modelling.** For defenders especially, this "
-      "understates points for high-CBIT players and overstates ball-playing "
-      "centre-backs under the new 2026/27 BPS.")
-    A("4. **Fixture multiplier is crude** — derived from FPL's own strength "
-      "ratings, which at GW1 are themselves last season's guesses.")
+    A("3. **DefCon rests on ONE season.** Defensive contributions only exist "
+      "from 2025/26, so there is no cross-season validation. Rates are "
+      "shrunk hard, but treat DefCon columns as the least reliable numbers "
+      "in this report.")
+    A("4. **Clean sheets use FPL's own strength ratings**, which at GW1 are "
+      "themselves last season's guesses. Bookmaker odds would be sharper.")
+    A("5. **Correlation is ignored.** Owning three defenders from one club is "
+      "riskier than the individual numbers suggest — they all live or die on "
+      "the same clean sheet. The joint simulation will fix this.")
     A("")
 
     A("## 6. News watchlist before the deadline")
@@ -220,10 +250,12 @@ def build(gw: int = None) -> Path:
     A("| Point-in-time data logging | ✅ live | now |")
     A("| Rules engine + drift alerts | ✅ live | now |")
     A("| Squad optimisation (IP) | ✅ live | now |")
-    A("| Minutes model | ❌ prior only | GW3 |")
-    A("| Clean sheet / goals / assists split | ❌ | GW3 |")
-    A("| Defensive contribution model | ❌ | GW4 |")
-    A("| BPS rebuilt from components | ❌ | GW4 |")
+    A("| Minutes model (7 seasons, validated) | ✅ live | now |")
+    A("| Shrunk goal / assist / save rates | ✅ live | now |")
+    A("| Clean sheet probability | ✅ v1 (strength-based) | now |")
+    A("| Defensive contribution model | ✅ live (1 season of data) | now |")
+    A("| Clean sheet from bookmaker odds | ❌ | GW3 |")
+    A("| BPS rebuilt from 2026/27 components | ❌ | GW4 |")
     A("| Monte Carlo joint distribution | ❌ | GW5 |")
     A("| Multi-GW transfer planning | ❌ | GW6 |")
     A("| Chip option-value model | ❌ | GW8 |")
