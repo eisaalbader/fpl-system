@@ -1,0 +1,5 @@
+as_of_utc,player_id,field,old,new
+2026-08-20T20:41:50.111081+00:00,328,status,d,a
+2026-08-20T20:41:50.111081+00:00,328,news,Knock - 75% chance of playing,
+2026-08-20T20:41:50.111081+00:00,328,chance_of_playing_next_round,75,100
+2026-08-20T20:41:50.111081+00:00,328,ep_next,1.6,2.2
