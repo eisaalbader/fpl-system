@@ -1,8 +1,10 @@
 # GW1 Decision Report
 
-Generated **2026-08-18 14:40 UTC** · Deadline **2026-08-21T17:30:00Z**
+Generated **2026-08-21 09:34 UTC** · Deadline **2026-08-21T17:30:00Z**
 
-🟢 Data is 0.8h old.
+🟢 Data is 0.7h old.
+
+> **No `team_id` set** in `config/settings.yaml`, so this is a fresh-squad build, not a transfer plan. Add your team ID to get week-by-week transfer advice.
 
 > ### ⚠️ What is and is not modelled here
 > There is **zero current-season Premier League data**. Everything below is built from 7 seasons of history (185,964 player-gameweek rows), not from current form.
@@ -21,17 +23,17 @@ Formation **5-4-1** · Squad cost **£100.0m** · XI expected points (captain do
 
 | Player | Team | £ | xP | P(60+) | Mins | DefCon | Own% | Conf | Note |
 |---|---|--:|--:|--:|--:|--:|--:|---|---|
-| Pickford | EVE | 5.5 | 3.83 | 0.89 | 80 | - | 8.5 | medium |  |
-| Gabriel | ARS | 8.0 | 4.74 | 0.93 | 83 | 0.36 | 28.7 | medium |  |
-| Senesi | TOT | 6.0 | 4.48 | 0.90 | 81 | 0.56 | 9.5 | medium |  |
-| Tarkowski | EVE | 6.0 | 4.47 | 0.90 | 81 | 0.45 | 9.5 | medium |  |
-| Virgil | LIV | 6.5 | 4.38 | 0.92 | 83 | 0.38 | 17.9 | medium |  |
-| Guéhi | MCI | 6.0 | 4.27 | 0.89 | 80 | 0.26 | 20.2 | medium |  |
-| B.Fernandes | MUN | 12.0 | 5.06 | 0.95 | 82 | 0.15 | 48.9 | medium |  |
-| Semenyo | MCI | 8.5 | 4.42 | 0.90 | 79 | 0.06 | 26.4 | medium |  |
-| Anderson | MCI | 6.5 | 4.20 | 0.81 | 73 | 0.49 | 9.6 | medium |  |
-| Rice | ARS | 7.5 | 4.12 | 0.85 | 75 | 0.30 | 19.9 | medium |  |
-| Thiago | BRE | 8.0 | 3.89 | 0.76 | 70 | 0.03 | 17.6 | medium |  |
+| Pickford | EVE | 5.5 | 3.83 | 0.89 | 80 | - | 8.0 | medium |  |
+| Gabriel | ARS | 8.0 | 4.74 | 0.93 | 83 | 0.36 | 29.7 | medium |  |
+| Senesi | TOT | 6.0 | 4.48 | 0.90 | 81 | 0.56 | 8.5 | medium |  |
+| Tarkowski | EVE | 6.0 | 4.47 | 0.90 | 81 | 0.45 | 9.0 | medium |  |
+| Virgil | LIV | 6.5 | 4.38 | 0.92 | 83 | 0.38 | 18.6 | medium |  |
+| Guéhi | MCI | 6.0 | 4.27 | 0.89 | 80 | 0.26 | 18.0 | medium |  |
+| B.Fernandes | MUN | 12.0 | 5.06 | 0.95 | 82 | 0.15 | 51.1 | medium |  |
+| Semenyo | MCI | 8.5 | 4.42 | 0.90 | 79 | 0.06 | 26.3 | medium |  |
+| Anderson | MCI | 6.5 | 4.20 | 0.81 | 73 | 0.49 | 8.4 | medium |  |
+| Rice | ARS | 7.5 | 4.12 | 0.85 | 75 | 0.30 | 18.6 | medium |  |
+| Thiago | BRE | 8.0 | 3.89 | 0.76 | 70 | 0.03 | 17.4 | medium |  |
 
 ## 2. Bench (in auto-sub order)
 
@@ -48,8 +50,8 @@ Formation **5-4-1** · Squad cost **£100.0m** · XI expected points (captain do
 
 | | xP | Floor (p10) | Ceiling (p90) | Exp mins | Own% |
 |---|--:|--:|--:|--:|--:|
-| B.Fernandes | 5.06 | 0.0 | 11.6 | 82 | 48.9 |
-| Gabriel (vice) | 4.74 | 0.1 | 9.4 | 83 | 28.7 |
+| B.Fernandes | 5.06 | 0.0 | 11.6 | 82 | 51.1 |
+| Gabriel (vice) | 4.74 | 0.1 | 9.4 | 83 | 29.7 |
 
 
 **Where the captain's points come from:**
@@ -65,20 +67,20 @@ Formation **5-4-1** · Squad cost **£100.0m** · XI expected points (captain do
 | Player | Team | Status | Chance | News |
 |---|---|---|--:|---|
 | Matheus N. | MCI | d | 75% | Knock - 75% chance of playing |
-| Mukiele | SUN | d | 75% | Knock - 75% chance of playing |
-| Struijk | BHA | d | 75% | Knock - 75% chance of playing |
-| Alderete | SUN | d | 75% | Knock - 75% chance of playing |
+| Bruno G. | ARS | d | 75% | Thigh injury - 75% chance of playing |
+| Henderson | CRY | d | 75% | Ankle injury - 75% chance of playing |
+| Doku | MCI | d | 75% | Calf injury - 75% chance of playing |
 | Kudus | TOT | d | 75% | Thigh injury - 75% chance of playing |
 | Šeško | MUN | d | 75% | Shin injury - 75% chance of playing |
+| Welbeck | CHE | d | 75% | Unspecified injury - 75% chance of playing |
 | C.Jones | LIV | d | 75% | Hip injury - 75% chance of playing |
 | Adams | BOU | d | 75% | Unspecified injury - 75% chance of playing |
 | Darlow | MUN | d | 75% | Unspecified injury - 75% chance of playing |
 | Henderson | CHE | d | 75% | Wrist injury - 75% chance of playing |
-| Livramento | NEW | d | 75% | Calf injury - 75% chance of playing |
 | Brooks | BOU | d | 75% | Unspecified injury - 75% chance of playing |
-| Meunier | SUN | d | 75% | Knock - 75% chance of playing |
-| Mason-Clark | COV | d | 75% | Hamstring injury - 75% chance of playing |
 | Mount | MUN | d | 50% | Foot injury - 50% chance of playing |
+| Jacob | HUL | d | 75% | Hip injury - 75% chance of playing |
+| Abraham | AVL | d | 75% | Knock - 75% chance of playing |
 
 ## 5. Biggest risks in this recommendation
 
@@ -125,66 +127,66 @@ Check these before locking in:
 
 | Player | Team | £ | xP | P(60+) | Mins | DefCon | Own% | Conf | Note |
 |---|---|--:|--:|--:|--:|--:|--:|---|---|
-| Pickford | EVE | 5.5 | 3.83 | 0.89 | 80 | - | 8.5 | medium |  |
-| Raya | ARS | 6.0 | 3.79 | 0.92 | 82 | - | 34.2 | medium |  |
-| Donnarumma | MCI | 5.5 | 3.77 | 0.88 | 79 | - | 9.7 | medium |  |
-| Kelleher | BRE | 5.0 | 3.67 | 0.84 | 75 | - | 5.9 | medium |  |
-| Verbruggen | BHA | 4.5 | 3.55 | 0.81 | 73 | - | 19.1 | medium |  |
-| Henderson | CRY | 5.0 | 3.50 | 0.85 | 76 | - | 3.2 | medium |  |
-| Leno | FUL | 4.5 | 3.44 | 0.80 | 72 | - | 3.3 | medium |  |
-| Roefs | SUN | 5.0 | 3.40 | 0.81 | 72 | - | 4.8 | medium |  |
-| Petrović | BOU | 4.5 | 3.34 | 0.81 | 73 | - | 3.6 | medium |  |
-| Sánchez | CHE | 5.0 | 3.34 | 0.80 | 72 | - | 2.2 | medium |  |
-| Lammens | MUN | 5.0 | 3.15 | 0.79 | 71 | - | 18.4 | medium |  |
-| Martinez | AVL | 5.0 | 3.14 | 0.74 | 67 | - | 4.8 | medium |  |
+| Pickford | EVE | 5.5 | 3.83 | 0.89 | 80 | - | 8.0 | medium |  |
+| Raya | ARS | 6.0 | 3.79 | 0.92 | 82 | - | 37.0 | medium |  |
+| Donnarumma | MCI | 5.5 | 3.77 | 0.88 | 79 | - | 8.5 | medium |  |
+| Kelleher | BRE | 5.0 | 3.67 | 0.84 | 75 | - | 5.8 | medium |  |
+| Verbruggen | BHA | 4.5 | 3.55 | 0.81 | 73 | - | 21.0 | medium |  |
+| Leno | FUL | 4.5 | 3.44 | 0.80 | 72 | - | 3.1 | medium |  |
+| Roefs | SUN | 5.0 | 3.40 | 0.81 | 72 | - | 4.5 | medium |  |
+| Petrović | BOU | 4.5 | 3.34 | 0.81 | 73 | - | 3.4 | medium |  |
+| Sánchez | CHE | 5.0 | 3.34 | 0.80 | 72 | - | 2.3 | medium |  |
+| Lammens | MUN | 5.0 | 3.15 | 0.79 | 71 | - | 17.2 | medium |  |
+| Martinez | AVL | 5.0 | 3.14 | 0.74 | 67 | - | 4.5 | medium |  |
+| Sels | NFO | 5.0 | 3.10 | 0.70 | 63 | - | 1.6 | medium |  |
 
 ### DEF
 
 | Player | Team | £ | xP | P(60+) | Mins | DefCon | Own% | Conf | Note |
 |---|---|--:|--:|--:|--:|--:|--:|---|---|
-| Gabriel | ARS | 8.0 | 4.74 | 0.93 | 83 | 0.36 | 28.7 | medium |  |
-| Senesi | TOT | 6.0 | 4.48 | 0.90 | 81 | 0.56 | 9.5 | medium |  |
-| Tarkowski | EVE | 6.0 | 4.47 | 0.90 | 81 | 0.45 | 9.5 | medium |  |
-| Virgil | LIV | 6.5 | 4.38 | 0.92 | 83 | 0.38 | 17.9 | medium |  |
-| Guéhi | MCI | 6.0 | 4.27 | 0.89 | 80 | 0.26 | 20.2 | medium |  |
-| Lacroix | CHE | 6.0 | 4.21 | 0.88 | 79 | 0.49 | 10.5 | medium |  |
-| O'Reilly | MCI | 6.5 | 3.97 | 0.86 | 77 | 0.10 | 21.5 | medium |  |
-| Collins | BRE | 5.5 | 3.93 | 0.82 | 74 | 0.37 | 2.0 | medium |  |
-| Truffert | BOU | 5.5 | 3.90 | 0.88 | 79 | 0.26 | 4.9 | medium |  |
-| Van Hecke | TOT | 5.0 | 3.82 | 0.83 | 75 | 0.31 | 8.9 | medium |  |
-| Milenković | NFO | 5.5 | 3.79 | 0.88 | 79 | 0.28 | 2.2 | medium |  |
-| Thiaw | NEW | 5.0 | 3.69 | 0.78 | 70 | 0.29 | 1.9 | medium |  |
+| Gabriel | ARS | 8.0 | 4.74 | 0.93 | 83 | 0.36 | 29.7 | medium |  |
+| Senesi | TOT | 6.0 | 4.48 | 0.90 | 81 | 0.56 | 8.5 | medium |  |
+| Tarkowski | EVE | 6.0 | 4.47 | 0.90 | 81 | 0.45 | 9.0 | medium |  |
+| Virgil | LIV | 6.5 | 4.38 | 0.92 | 83 | 0.38 | 18.6 | medium |  |
+| Guéhi | MCI | 6.0 | 4.27 | 0.89 | 80 | 0.26 | 18.0 | medium |  |
+| Lacroix | CHE | 6.0 | 4.21 | 0.88 | 79 | 0.49 | 9.5 | medium |  |
+| O'Reilly | MCI | 6.5 | 3.97 | 0.86 | 77 | 0.10 | 21.2 | medium |  |
+| Collins | BRE | 5.5 | 3.93 | 0.82 | 74 | 0.37 | 1.9 | medium |  |
+| Truffert | BOU | 5.5 | 3.90 | 0.88 | 79 | 0.26 | 4.6 | medium |  |
+| Van Hecke | TOT | 5.0 | 3.82 | 0.83 | 75 | 0.31 | 9.4 | medium |  |
+| Milenković | NFO | 5.5 | 3.79 | 0.88 | 79 | 0.28 | 2.0 | medium |  |
+| Mukiele | SUN | 5.5 | 3.79 | 0.80 | 72 | 0.29 | 2.4 | medium |  |
 
 ### MID
 
 | Player | Team | £ | xP | P(60+) | Mins | DefCon | Own% | Conf | Note |
 |---|---|--:|--:|--:|--:|--:|--:|---|---|
-| B.Fernandes | MUN | 12.0 | 5.06 | 0.95 | 82 | 0.15 | 48.9 | medium |  |
-| Semenyo | MCI | 8.5 | 4.42 | 0.90 | 79 | 0.06 | 26.4 | medium |  |
-| Anderson | MCI | 6.5 | 4.20 | 0.81 | 73 | 0.49 | 9.6 | medium |  |
-| Rice | ARS | 7.5 | 4.12 | 0.85 | 75 | 0.30 | 19.9 | medium |  |
-| Saka | ARS | 9.5 | 4.08 | 0.84 | 74 | 0.09 | 9.6 | medium |  |
-| Gibbs-White | NFO | 8.0 | 4.07 | 0.86 | 76 | 0.02 | 11.9 | medium |  |
-| Szoboszlai | LIV | 7.0 | 3.82 | 0.83 | 74 | 0.19 | 41.3 | medium |  |
-| Palmer | CHE | 9.5 | 3.81 | 0.83 | 73 | 0.04 | 10.6 | medium |  |
-| Rogers | CHE | 7.5 | 3.80 | 0.86 | 76 | 0.05 | 26.6 | medium |  |
-| Cunha | MUN | 8.0 | 3.79 | 0.81 | 72 | 0.09 | 11.3 | medium |  |
-| Bruno G. | ARS | 7.0 | 3.74 | 0.72 | 65 | 0.15 | 9.0 | medium |  |
-| Enzo | CHE | 7.0 | 3.71 | 0.82 | 74 | 0.07 | 5.3 | medium |  |
+| B.Fernandes | MUN | 12.0 | 5.06 | 0.95 | 82 | 0.15 | 51.1 | medium |  |
+| Semenyo | MCI | 8.5 | 4.42 | 0.90 | 79 | 0.06 | 26.3 | medium |  |
+| Anderson | MCI | 6.5 | 4.20 | 0.81 | 73 | 0.49 | 8.4 | medium |  |
+| Rice | ARS | 7.5 | 4.12 | 0.85 | 75 | 0.30 | 18.6 | medium |  |
+| Saka | ARS | 9.5 | 4.08 | 0.84 | 74 | 0.09 | 9.2 | medium |  |
+| Gibbs-White | NFO | 8.0 | 4.07 | 0.86 | 76 | 0.02 | 11.8 | medium |  |
+| Szoboszlai | LIV | 7.0 | 3.82 | 0.83 | 74 | 0.19 | 41.7 | medium |  |
+| Palmer | CHE | 9.5 | 3.81 | 0.83 | 73 | 0.04 | 10.4 | medium |  |
+| Rogers | CHE | 7.5 | 3.80 | 0.86 | 76 | 0.05 | 25.2 | medium |  |
+| Cunha | MUN | 8.0 | 3.79 | 0.81 | 72 | 0.09 | 10.4 | medium |  |
+| Enzo | CHE | 7.0 | 3.71 | 0.82 | 74 | 0.07 | 5.1 | medium |  |
+| Mbeumo | MUN | 8.0 | 3.65 | 0.82 | 73 | 0.02 | 36.5 | medium |  |
 
 ### FWD
 
 | Player | Team | £ | xP | P(60+) | Mins | DefCon | Own% | Conf | Note |
 |---|---|--:|--:|--:|--:|--:|--:|---|---|
-| Haaland | MCI | 15.5 | 5.24 | 0.94 | 81 | - | 70.5 | medium |  |
-| Thiago | BRE | 8.0 | 3.89 | 0.76 | 70 | 0.03 | 17.6 | medium |  |
-| Watkins | AVL | 8.0 | 3.54 | 0.71 | 65 | - | 12.4 | medium |  |
-| João Pedro | CHE | 7.5 | 3.48 | 0.64 | 60 | - | 60.0 | low |  |
-| Gyökeres | ARS | 7.5 | 3.00 | 0.57 | 54 | - | 10.9 | low |  |
-| Calvert-Lewin | LEE | 6.0 | 2.55 | 0.50 | 49 | - | 27.4 | low |  |
-| Isak | LIV | 9.0 | 2.45 | 0.43 | 45 | - | 15.4 | low |  |
-| Mateta | CRY | 6.5 | 2.39 | 0.45 | 45 | - | 6.1 | low |  |
+| Haaland | MCI | 15.5 | 5.24 | 0.94 | 81 | - | 69.3 | medium |  |
+| Thiago | BRE | 8.0 | 3.89 | 0.76 | 70 | 0.03 | 17.4 | medium |  |
+| Watkins | AVL | 8.0 | 3.54 | 0.71 | 65 | - | 10.9 | medium |  |
+| João Pedro | CHE | 7.5 | 3.48 | 0.64 | 60 | - | 63.4 | low |  |
+| Gyökeres | ARS | 7.5 | 3.00 | 0.57 | 54 | - | 9.7 | low |  |
+| Calvert-Lewin | LEE | 6.0 | 2.55 | 0.50 | 49 | - | 30.3 | low |  |
+| Isak | LIV | 9.0 | 2.45 | 0.43 | 45 | - | 16.4 | low |  |
+| Mateta | CRY | 6.5 | 2.39 | 0.45 | 45 | - | 5.8 | low |  |
 | Evanilson | BOU | 6.0 | 2.34 | 0.51 | 49 | - | 2.2 | low |  |
-| Welbeck | CHE | 6.0 | 2.24 | 0.40 | 41 | - | 2.2 | low |  |
-| Igor Jesus | NFO | 6.0 | 2.06 | 0.42 | 41 | - | 5.2 | low |  |
-| Richarlison | TOT | 6.0 | 2.01 | 0.32 | 34 | 0.02 | 2.6 | low |  |
+| Igor Jesus | NFO | 6.0 | 2.06 | 0.42 | 41 | - | 4.5 | low |  |
+| Richarlison | TOT | 6.0 | 2.01 | 0.32 | 34 | 0.02 | 3.0 | low |  |
+| Woltemade | NEW | 6.0 | 1.98 | 0.37 | 37 | - | 1.7 | low |  |
