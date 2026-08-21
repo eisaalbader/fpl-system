@@ -1,6 +1,6 @@
 # Your settings. The ONLY file you need to edit.
 fpl:
-  team_id: null          # <-- your FPL team ID (the number in your FPL URL)
+  team_id: 5903925          # <-- your FPL team ID (the number in your FPL URL)
   # NO email/password. Ever. Public endpoints only.
 
 optimiser:
