@@ -1,0 +1,17 @@
+as_of_utc,player_id,field,old,new
+2026-08-21T13:44:09.271378+00:00,600,ep_next,,1.5
+2026-08-21T13:44:09.271378+00:00,21,status,d,i
+2026-08-21T13:44:09.271378+00:00,21,news,Unspecified injury - 25% chance of playing,Unspecified injury - Unknown return date
+2026-08-21T13:44:09.271378+00:00,21,chance_of_playing_next_round,25,0
+2026-08-21T13:44:09.271378+00:00,21,ep_next,0.4,0.0
+2026-08-21T13:44:09.271378+00:00,239,status,i,d
+2026-08-21T13:44:09.271378+00:00,239,news,Groin injury - Unknown return date,Groin injury - 25% chance of playing
+2026-08-21T13:44:09.271378+00:00,239,chance_of_playing_next_round,0,25
+2026-08-21T13:44:09.271378+00:00,240,news,Groin injury - Unknown return date,Thigh injury - Unknown return date
+2026-08-21T13:44:09.271378+00:00,317,status,a,u
+2026-08-21T13:44:09.271378+00:00,317,news,,Has joined Stoke City permanently
+2026-08-21T13:44:09.271378+00:00,317,news_added,,2026-08-21T13:06:08.606019Z
+2026-08-21T13:44:09.271378+00:00,317,chance_of_playing_next_round,,0
+2026-08-21T13:44:09.271378+00:00,317,ep_next,1.4,0.0
+2026-08-21T13:44:09.271378+00:00,389,ep_next,2.1,2.8
+2026-08-21T13:44:09.271378+00:00,400,ep_next,2.0,0.0
