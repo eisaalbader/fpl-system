@@ -1,0 +1,9 @@
+as_of_utc,player_id,field,old,new
+2026-08-22T13:41:05.924230+00:00,198,status,d,a
+2026-08-22T13:41:05.924230+00:00,198,news,Ankle injury - 75% chance of playing,
+2026-08-22T13:41:05.924230+00:00,198,chance_of_playing_next_round,75,100
+2026-08-22T13:41:05.924230+00:00,198,ep_next,2.0,2.6
+2026-08-22T13:41:05.924230+00:00,239,status,d,a
+2026-08-22T13:41:05.924230+00:00,239,news,Groin injury - 25% chance of playing,
+2026-08-22T13:41:05.924230+00:00,239,chance_of_playing_next_round,25,100
+2026-08-22T13:41:05.924230+00:00,239,ep_next,0.5,2.1
