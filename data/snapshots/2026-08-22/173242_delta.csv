@@ -1,0 +1,13 @@
+as_of_utc,player_id,field,old,new
+2026-08-22T17:32:42.996870+00:00,279,status,a,d
+2026-08-22T17:32:42.996870+00:00,279,news,,Unspecified injury - 75% chance of playing
+2026-08-22T17:32:42.996870+00:00,279,news_added,,2026-08-22T17:30:07.668197Z
+2026-08-22T17:32:42.996870+00:00,279,chance_of_playing_next_round,,75
+2026-08-22T17:32:42.996870+00:00,280,status,a,d
+2026-08-22T17:32:42.996870+00:00,280,news,,Ankle injury - 75% chance of playing
+2026-08-22T17:32:42.996870+00:00,280,news_added,,2026-08-22T17:30:07.685683Z
+2026-08-22T17:32:42.996870+00:00,280,chance_of_playing_next_round,,75
+2026-08-22T17:32:42.996870+00:00,586,status,a,d
+2026-08-22T17:32:42.996870+00:00,586,news,,Unspecified injury - 75% chance of playing
+2026-08-22T17:32:42.996870+00:00,586,news_added,,2026-08-22T17:30:08.045208Z
+2026-08-22T17:32:42.996870+00:00,586,chance_of_playing_next_round,,75
