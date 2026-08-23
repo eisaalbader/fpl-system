@@ -1,0 +1,35 @@
+name: backtest
+
+# The referee. Runs weekly and on demand. If a model change does not move these
+# numbers in the right direction, it does not get merged.
+on:
+  schedule:
+    - cron: "0 6 * * 1"        # Monday 06:00 UTC, after the gameweek finalises
+  workflow_dispatch:
+
+jobs:
+  backtest:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+      - name: Install
+        run: pip install pandas pyarrow numpy scikit-learn PyYAML requests
+      - name: Prepare output dir
+        run: mkdir -p data/backtest
+      - name: Baselines vs pipeline
+        run: python src/backtest.py --out data/backtest
+      - name: BPS reconstruction
+        run: python src/bps.py | tee data/backtest/bps_report.txt
+      - name: Odds clean-sheet gate
+        continue-on-error: true    # network-dependent; must not block the rest
+        run: python src/odds.py --backtest 2023-24 2024-25 2025-26 | tee data/backtest/odds_report.txt
+      - name: Commit results
+        run: |
+          git config user.name  "fpl-bot"
+          git config user.email "bot@users.noreply.github.com"
+          git add -A data/backtest || true
+          git commit -m "backtest: $(date -u +%Y-%m-%d)" || echo "no changes"
+          git push || echo "push skipped"
