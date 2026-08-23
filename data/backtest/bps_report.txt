@@ -1,0 +1,63 @@
+=== RECOVERED 2025/26 WEIGHTS (measured, not assumed) ===
+
+GKP  n=767  R2=0.860
+    clearances_blocks_interceptions      +0.178 BPS/unit
+    recoveries                           +0.386 BPS/unit
+    tackles                              +0.682 BPS/unit
+    saves                                +2.499 BPS/unit
+    goals_scored                         +0.000 BPS/unit
+    assists                              +8.214 BPS/unit
+    clean_sheets                         +19.522 BPS/unit
+
+DEF  n=3950  R2=0.815
+    clearances_blocks_interceptions      +0.478 BPS/unit
+    recoveries                           +0.540 BPS/unit
+    tackles                              +1.034 BPS/unit
+    saves                                -0.000 BPS/unit
+    goals_scored                         +15.089 BPS/unit
+    assists                              +11.080 BPS/unit
+    clean_sheets                         +19.282 BPS/unit
+
+MID  n=5347  R2=0.841
+    clearances_blocks_interceptions      +0.580 BPS/unit
+    recoveries                           +0.643 BPS/unit
+    tackles                              +1.106 BPS/unit
+    saves                                -0.000 BPS/unit
+    goals_scored                         +19.930 BPS/unit
+    assists                              +11.468 BPS/unit
+    clean_sheets                         +0.609 BPS/unit
+
+FWD  n=1434  R2=0.934
+    clearances_blocks_interceptions      +0.564 BPS/unit
+    recoveries                           +0.658 BPS/unit
+    tackles                              +1.106 BPS/unit
+    saves                                -0.000 BPS/unit
+    goals_scored                         +25.772 BPS/unit
+    assists                              +11.035 BPS/unit
+    clean_sheets                         +0.791 BPS/unit
+
+=== BONUS UNDER 2026/27 RULES ===
+             n  bonus_old  bonus_new  rate_old  rate_new  multiplier
+position                                                            
+DEF       3950     0.1711     0.1597    0.0911    0.0858      0.9334
+FWD       1434     0.3368     0.3438    0.1520    0.1569      1.0207
+GKP        767     0.2112     0.2412    0.1095    0.1330      1.1420
+MID       5347     0.2053     0.2080    0.1017    0.1034      1.0128
+
+=== GK SAVE SENSITIVITY (the one ambiguous term) ===
+                DEF    FWD    GKP    MID
+new_save_bps                            
+2.0           0.966  1.029  0.772  1.021
+2.5           0.896  1.014  1.136  1.006
+3.0           0.855  1.008  1.451  0.986
+3.5           0.791  0.998  1.846  0.968
+
+=== VERDICT: replacement for the flat 0.6 damp ===
+    DEF: 0.93   (was 0.60 for every position)
+    MID: 1.01   (was 0.60 for every position)
+    FWD: 1.02   (was 0.60 for every position)
+    GKP: 0.60   (was 0.60 for every position)  <-- UNRESOLVED, left at old damp
+
+  Unobservable and therefore NOT credited: removal of the -1 BPS
+  'being tackled' penalty. Dribble-heavy MID/FWD are under-credited
+  by this reconstruction, so those multipliers are conservative.

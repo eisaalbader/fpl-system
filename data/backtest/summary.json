@@ -1,0 +1,42 @@
+{
+  "MAE": {
+    "xgi": 1.8936,
+    "ppg": 2.0904,
+    "minutes_x_ppm": 2.1037,
+    "form5": 2.1568,
+    "price": 2.2419,
+    "naive_last": 2.5657
+  },
+  "RMSE": {
+    "xgi": 3.1286,
+    "ppg": 2.9509,
+    "minutes_x_ppm": 3.0431,
+    "form5": 3.1378,
+    "price": 3.543,
+    "naive_last": 3.9068
+  },
+  "spearman": {
+    "xgi": 0.2557,
+    "ppg": 0.2854,
+    "minutes_x_ppm": 0.301,
+    "form5": 0.2793,
+    "price": 0.1966,
+    "naive_last": 0.2329
+  },
+  "top20_hit": {
+    "xgi": 0.149,
+    "ppg": 0.1708,
+    "minutes_x_ppm": 0.1706,
+    "form5": 0.1573,
+    "price": 0.1806,
+    "naive_last": 0.1516
+  },
+  "captain_capture": {
+    "xgi": 0.2979,
+    "ppg": 0.3511,
+    "minutes_x_ppm": 0.3675,
+    "form5": 0.3349,
+    "price": 0.3357,
+    "naive_last": 0.2429
+  }
+}
