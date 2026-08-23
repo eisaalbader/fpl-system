@@ -67,13 +67,20 @@ SEASON_CODE = {"2023-24": "2324", "2024-25": "2425", "2025-26": "2526", "2026-27
 # football-data.co.uk team names -> FPL short names. Extend as needed; the
 # loader raises on an unmapped name rather than silently dropping a fixture.
 TEAM_MAP = {
+    # Every club to appear in the PL from 2019-20 onward. An unmapped club
+    # silently drops ~40% of a season's matches, which is how the first
+    # backtest of this module produced a meaningless result.
     "Arsenal": "ARS", "Aston Villa": "AVL", "Bournemouth": "BOU",
-    "Brentford": "BRE", "Brighton": "BHA", "Chelsea": "CHE",
-    "Coventry": "COV", "Crystal Palace": "CRY", "Everton": "EVE",
-    "Fulham": "FUL", "Hull": "HUL", "Ipswich": "IPS", "Leeds": "LEE",
-    "Liverpool": "LIV", "Man City": "MCI", "Man United": "MUN",
-    "Newcastle": "NEW", "Nott'm Forest": "NFO", "Sunderland": "SUN",
-    "Tottenham": "TOT",
+    "Brentford": "BRE", "Brighton": "BHA", "Burnley": "BUR", "Cardiff": "CAR",
+    "Chelsea": "CHE", "Coventry": "COV", "Crystal Palace": "CRY",
+    "Everton": "EVE", "Fulham": "FUL", "Huddersfield": "HUD", "Hull": "HUL",
+    "Ipswich": "IPS", "Leeds": "LEE", "Leicester": "LEI", "Liverpool": "LIV",
+    "Luton": "LUT", "Man City": "MCI", "Man United": "MUN",
+    "Middlesbrough": "MID", "Newcastle": "NEW", "Norwich": "NOR",
+    "Nott'm Forest": "NFO", "Sheffield United": "SHU", "Southampton": "SOU",
+    "Stoke": "STK", "Sunderland": "SUN", "Swansea": "SWA",
+    "Tottenham": "TOT", "Watford": "WAT", "West Brom": "WBA",
+    "West Ham": "WHU", "Wolves": "WOL",
 }
 
 
@@ -117,7 +124,7 @@ def fetch_upcoming(timeout: int = 30) -> pd.DataFrame:
     return df[df.get("Div", "") == "E0"].copy()
 
 
-def parse_odds(df: pd.DataFrame) -> list[MatchOdds]:
+def parse_odds(df: pd.DataFrame) -> list[tuple[MatchOdds, pd.Series]]:
     """
     Pull 1X2 and over/under 2.5 from whichever columns are populated.
 
@@ -125,7 +132,8 @@ def parse_odds(df: pd.DataFrame) -> list[MatchOdds]:
     market average (Avg*/BbAv*). Pinnacle is sharpest but least consistently
     present in the historical files.
     """
-    out: list[MatchOdds] = []
+    out: list[tuple[MatchOdds, pd.Series]] = []
+    skipped = 0
     h_cols = ["B365H", "PSH", "AvgH", "BbAvH"]
     d_cols = ["B365D", "PSD", "AvgD", "BbAvD"]
     a_cols = ["B365A", "PSA", "AvgA", "BbAvA"]
@@ -152,10 +160,17 @@ def parse_odds(df: pd.DataFrame) -> list[MatchOdds]:
 
         ht, at = str(row.get("HomeTeam", "")), str(row.get("AwayTeam", ""))
         if ht not in TEAM_MAP or at not in TEAM_MAP:
-            log.warning("unmapped team: %r vs %r - fixture skipped", ht, at)
+            log.warning("UNMAPPED TEAM %r vs %r - fixture dropped", ht, at)
+            skipped += 1
             continue
-        out.append(MatchOdds(TEAM_MAP[ht], TEAM_MAP[at],
-                             float(p[0]), float(p[1]), float(p[2]), p_over))
+        out.append((MatchOdds(TEAM_MAP[ht], TEAM_MAP[at],
+                              float(p[0]), float(p[1]), float(p[2]), p_over), row))
+
+    total = len(df)
+    if total and len(out) / total < 0.90:
+        log.error("LOW COVERAGE: only %d of %d fixtures parsed (%.0f%%). "
+                  "Check TEAM_MAP and odds column names before trusting any "
+                  "number from this run.", len(out), total, 100 * len(out) / total)
     return out
 
 
@@ -204,7 +219,7 @@ def build_table(season: str = "2026-27", upcoming: bool = True) -> pd.DataFrame:
     """Clean sheet probability per team per fixture. This is what project.py consumes."""
     df = fetch_upcoming() if upcoming else fetch_season(season)
     rows = []
-    for mo in parse_odds(df):
+    for mo, _row in parse_odds(df):
         lh, la = implied_goals(mo)
         rows.append({"team": mo.home, "opponent": mo.away, "was_home": True,
                      "xg_for": lh, "xg_against": la, "p_cs": float(np.exp(-la))})
@@ -226,7 +241,7 @@ def backtest(seasons: list[str]) -> pd.DataFrame:
     rows = []
     for s in seasons:
         df = fetch_season(s)
-        for mo, (_, raw) in zip(parse_odds(df), df.iterrows()):
+        for mo, raw in parse_odds(df):
             try:
                 hg, ag = int(raw["FTHG"]), int(raw["FTAG"])
             except (KeyError, ValueError, TypeError):
