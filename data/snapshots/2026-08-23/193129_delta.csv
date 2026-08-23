@@ -1,0 +1,17 @@
+as_of_utc,player_id,field,old,new
+2026-08-23T19:31:29.266029+00:00,74,status,d,a
+2026-08-23T19:31:29.266029+00:00,74,news,Unspecified injury - 75% chance of playing,
+2026-08-23T19:31:29.266029+00:00,74,chance_of_playing_next_round,75,100
+2026-08-23T19:31:29.266029+00:00,74,ep_next,1.1,1.5
+2026-08-23T19:31:29.266029+00:00,145,news,Suspended until 6 Sep,Suspended until 30 Aug
+2026-08-23T19:31:29.266029+00:00,561,status,a,d
+2026-08-23T19:31:29.266029+00:00,561,news,,Hamstring injury - 25% chance of playing
+2026-08-23T19:31:29.266029+00:00,561,news_added,,2026-08-23T19:00:08.536705Z
+2026-08-23T19:31:29.266029+00:00,561,chance_of_playing_next_round,,25
+2026-08-23T19:31:29.266029+00:00,561,ep_next,1.7,0.4
+2026-08-23T19:31:29.266029+00:00,430,news,Foot injury - 50% chance of playing,Foot injury - 75% chance of playing
+2026-08-23T19:31:29.266029+00:00,430,chance_of_playing_next_round,50,75
+2026-08-23T19:31:29.266029+00:00,430,ep_next,1.0,1.5
+2026-08-23T19:31:29.266029+00:00,512,news,Thigh injury - 25% chance of playing,Thigh injury - 50% chance of playing
+2026-08-23T19:31:29.266029+00:00,512,chance_of_playing_next_round,25,50
+2026-08-23T19:31:29.266029+00:00,512,ep_next,0.6,1.1
