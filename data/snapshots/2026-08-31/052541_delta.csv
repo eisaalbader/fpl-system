@@ -1,0 +1,5 @@
+as_of_utc,player_id,field,old,new
+2026-08-31T05:25:41.718695+00:00,612,status,s,a
+2026-08-31T05:25:41.718695+00:00,612,news,Suspended until 5 Sep,
+2026-08-31T05:25:41.718695+00:00,612,chance_of_playing_next_round,0,100
+2026-08-31T05:25:41.718695+00:00,612,ep_next,0.0,1.7
