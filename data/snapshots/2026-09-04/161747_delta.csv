@@ -1,0 +1,67 @@
+as_of_utc,player_id,field,old,new
+2026-09-04T16:17:47.475182+00:00,5,status,i,d
+2026-09-04T16:17:47.475182+00:00,5,news,Groin injury - Unknown return date,Groin injury - 25% chance of playing
+2026-09-04T16:17:47.475182+00:00,5,chance_of_playing_next_round,0,25
+2026-09-04T16:17:47.475182+00:00,11,status,a,d
+2026-09-04T16:17:47.475182+00:00,11,news,,Unspecified injury - 75% chance of playing
+2026-09-04T16:17:47.475182+00:00,11,news_added,,2026-09-04T14:00:08.080310Z
+2026-09-04T16:17:47.475182+00:00,11,chance_of_playing_next_round,,75
+2026-09-04T16:17:47.475182+00:00,11,ep_next,6.0,4.5
+2026-09-04T16:17:47.475182+00:00,18,status,a,u
+2026-09-04T16:17:47.475182+00:00,18,news,,Has joined Al Hilal permanently
+2026-09-04T16:17:47.475182+00:00,18,news_added,,2026-09-04T12:34:46.738449Z
+2026-09-04T16:17:47.475182+00:00,18,chance_of_playing_next_round,,0
+2026-09-04T16:17:47.475182+00:00,452,status,a,d
+2026-09-04T16:17:47.475182+00:00,452,news,,Knock - 75% chance of playing
+2026-09-04T16:17:47.475182+00:00,452,news_added,2026-08-20T17:00:08.846118Z,2026-09-04T14:00:08.328779Z
+2026-09-04T16:17:47.475182+00:00,452,chance_of_playing_next_round,100,75
+2026-09-04T16:17:47.475182+00:00,452,ep_next,0.5,0.4
+2026-09-04T16:17:47.475182+00:00,44,status,a,u
+2026-09-04T16:17:47.475182+00:00,44,news,,Has joined Olympiakos permanently
+2026-09-04T16:17:47.475182+00:00,44,news_added,,2026-09-04T12:35:14.472260Z
+2026-09-04T16:17:47.475182+00:00,44,chance_of_playing_next_round,,0
+2026-09-04T16:17:47.475182+00:00,53,news,Knee injury - Unknown return date,Knee injury - Expected back 12 Sep
+2026-09-04T16:17:47.475182+00:00,607,status,a,u
+2026-09-04T16:17:47.475182+00:00,607,news,,Has joined Oxford United on loan until January
+2026-09-04T16:17:47.475182+00:00,607,news_added,,2026-09-04T12:35:39.820426Z
+2026-09-04T16:17:47.475182+00:00,607,chance_of_playing_next_round,,0
+2026-09-04T16:17:47.475182+00:00,97,status,d,i
+2026-09-04T16:17:47.475182+00:00,97,news,Unspecified injury - 75% chance of playing,Unspecified injury - Expected back 18 Sep
+2026-09-04T16:17:47.475182+00:00,97,chance_of_playing_next_round,75,0
+2026-09-04T16:17:47.475182+00:00,97,ep_next,2.2,0.0
+2026-09-04T16:17:47.475182+00:00,103,status,a,i
+2026-09-04T16:17:47.475182+00:00,103,news,,Hamstring injury - Expected back 10 Oct
+2026-09-04T16:17:47.475182+00:00,103,news_added,,2026-09-04T13:30:08.371955Z
+2026-09-04T16:17:47.475182+00:00,103,chance_of_playing_next_round,,0
+2026-09-04T16:17:47.475182+00:00,652,status,a,i
+2026-09-04T16:17:47.475182+00:00,652,news,,Unspecified injury - Expected back 13 Sep
+2026-09-04T16:17:47.475182+00:00,652,news_added,,2026-09-04T11:30:08.661589Z
+2026-09-04T16:17:47.475182+00:00,652,chance_of_playing_next_round,,0
+2026-09-04T16:17:47.475182+00:00,652,ep_next,2.0,0.0
+2026-09-04T16:17:47.475182+00:00,307,status,a,u
+2026-09-04T16:17:47.475182+00:00,307,news,,Has joined Stoke City on loan for the rest of the season
+2026-09-04T16:17:47.475182+00:00,307,news_added,,2026-09-04T12:36:56.236331Z
+2026-09-04T16:17:47.475182+00:00,307,chance_of_playing_next_round,,0
+2026-09-04T16:17:47.475182+00:00,389,status,d,a
+2026-09-04T16:17:47.475182+00:00,389,news,Unspecified injury - 75% chance of playing,
+2026-09-04T16:17:47.475182+00:00,389,chance_of_playing_next_round,75,100
+2026-09-04T16:17:47.475182+00:00,389,ep_next,0.4,0.5
+2026-09-04T16:17:47.475182+00:00,466,status,a,u
+2026-09-04T16:17:47.475182+00:00,466,news,,Has joined Wolves on loan for the rest of the season
+2026-09-04T16:17:47.475182+00:00,466,news_added,,2026-09-04T12:37:43.515176Z
+2026-09-04T16:17:47.475182+00:00,466,chance_of_playing_next_round,,0
+2026-09-04T16:17:47.475182+00:00,403,status,d,a
+2026-09-04T16:17:47.475182+00:00,403,news,Muscular injury - 75% chance of playing,
+2026-09-04T16:17:47.475182+00:00,403,chance_of_playing_next_round,75,100
+2026-09-04T16:17:47.475182+00:00,523,status,a,u
+2026-09-04T16:17:47.475182+00:00,523,news,,Has joined FC Köln on loan for the rest of the season
+2026-09-04T16:17:47.475182+00:00,523,news_added,,2026-09-04T12:39:48.098158Z
+2026-09-04T16:17:47.475182+00:00,523,chance_of_playing_next_round,,0
+2026-09-04T16:17:47.475182+00:00,523,ep_next,1.5,0.0
+2026-09-04T16:17:47.475182+00:00,527,status,a,u
+2026-09-04T16:17:47.475182+00:00,527,news,,not included in squad.
+2026-09-04T16:17:47.475182+00:00,527,news_added,,2026-09-04T12:32:39.183614Z
+2026-09-04T16:17:47.475182+00:00,527,chance_of_playing_next_round,,0
+2026-09-04T16:17:47.475182+00:00,527,ep_next,1.0,0.0
+2026-09-04T16:17:47.475182+00:00,546,status,i,u
+2026-09-04T16:17:47.475182+00:00,546,news,Ankle injury - Unknown return date,Has joined Ajax on loan for the rest of the season
