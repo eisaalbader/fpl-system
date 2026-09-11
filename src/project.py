@@ -234,10 +234,16 @@ def blend_current_minutes(dist: Dict[str, float], el: Dict[str, Any],
     p60_prior = dist["partial"] + dist["full"]
     exp_prior = sum(dist[bk] * M.BUCKET_MINUTES[bk] for bk in M.BUCKETS)
 
-    p60 = (starts + K * p60_prior) / (games + K)
-    exp_min = (mins + K * exp_prior) / (games + K)
-
+    # Starting is not the same as clearing the 60-minute gate. A striker hooked
+    # on the hour three weeks running has started every game but earned the
+    # second appearance point roughly once, and was ineligible for a clean
+    # sheet the rest of the time. Discount starts by how long they actually
+    # last instead of counting each one whole.
     mws = (mins / starts) if starts > 0 else 0.0
+    starts_60 = starts * float(np.clip((mws - 45.0) / 30.0, 0.0, 1.0))
+
+    p60 = (starts_60 + K * p60_prior) / (games + K)
+    exp_min = (mins + K * exp_prior) / (games + K)
     full_share = (0.85 if mws >= 87 else 0.65 if mws >= 80
                   else 0.45 if mws >= 70 else 0.35)
     full = p60 * full_share
