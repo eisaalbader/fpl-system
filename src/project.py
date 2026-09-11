@@ -52,6 +52,18 @@ ASSIST_POINTS = 3
 BONUS_DAMPING = 0.6
 LEAGUE_AVG_GOALS = 1.42
 
+# --- current-season blending -------------------------------------------------
+# The cold minutes model is trained on GW1 rows of past seasons and keyed on
+# LAST season's aggregates, so from GW3 onward it is the weakest thing we know
+# about a player who has started every week. Treat it as a prior worth this
+# many pseudo-matches and let observed starts take over.
+MINUTES_PRIOR_GAMES = 2.0
+# Historical per-90 rates are worth this many minutes of current-season
+# evidence. At 270 minutes played, this season carries ~40% of the weight.
+RATE_PRIOR_MINUTES = 400.0
+# Team attack/defence are shrunk toward the league mean by this many matches.
+TEAM_PRIOR_MATCHES = 3.0
+
 
 def _norm(s: str) -> str:
     import unicodedata
@@ -75,31 +87,176 @@ def availability_multiplier(el: Dict[str, Any]) -> float:
     return 0.5 if status == "d" else 1.0
 
 
-def team_cs_probability(bs, fixtures, gw) -> Dict[int, float]:
-    """P(clean sheet) per team from FPL strength ratings via Poisson."""
+def team_match_counts(fixtures) -> Dict[int, int]:
+    """Finished matches per team, so "this season so far" means the same thing
+    for a club that has had a postponement as for one that has not."""
+    played: Dict[int, int] = {}
+    for f in fixtures:
+        if f.get("finished"):
+            for k in ("team_h", "team_a"):
+                if f.get(k) is not None:
+                    played[f[k]] = played.get(f[k], 0) + 1
+    return played
+
+
+def team_strengths(bs, fixtures) -> Dict[str, Any]:
+    """
+    Per-team attack and defence rates for the CURRENT season, shrunk toward the
+    league mean.
+
+    WHY THIS REPLACED THE strength_* FIELDS
+    ---------------------------------------
+    The previous implementation read strength_attack_home / strength_defence_home
+    from bootstrap. In 2026/27 the API returns 0 for all four of those fields.
+    The "or avg" fallbacks then resolved every ratio to exactly 1.0, so every
+    club got an identical clean-sheet probability - Arsenal and Ipswich scored
+    the same. It failed silently, which is worse than failing loudly.
+
+    Strength now comes from the season's own numbers: attack from summed player
+    expected_goals; defence from expected_goals_conceded carried by a
+    near-ever-present player, since that column accumulates only while the
+    player is on the pitch, so a full-time starter's total IS the team's.
+    Actual goals conceded from finished fixtures is the fallback.
+    """
+    teams = {t["id"]: t for t in bs.get("teams", [])}
+    played = team_match_counts(fixtures)
+
+    xgf = {tid: 0.0 for tid in teams}
+    xga_best = {tid: (0.0, 0.0) for tid in teams}      # (minutes, xgc)
+    for el in bs.get("elements", []):
+        tid = el.get("team")
+        if tid not in teams:
+            continue
+        xgf[tid] += _f(el.get("expected_goals"))
+        m = _f(el.get("minutes"))
+        if m > xga_best[tid][0]:
+            xga_best[tid] = (m, _f(el.get("expected_goals_conceded")))
+
+    ga_actual = {tid: 0.0 for tid in teams}
+    for f in fixtures:
+        if not f.get("finished"):
+            continue
+        h, a_ = f.get("team_h"), f.get("team_a")
+        hs, as_ = f.get("team_h_score"), f.get("team_a_score")
+        if h in ga_actual and as_ is not None:
+            ga_actual[h] += float(as_)
+        if a_ in ga_actual and hs is not None:
+            ga_actual[a_] += float(hs)
+
+    att, dfn = {}, {}
+    for tid in teams:
+        n = max(played.get(tid, 0), 0)
+        if n == 0:
+            att[tid] = dfn[tid] = LEAGUE_AVG_GOALS
+            continue
+        att[tid] = xgf[tid] / n
+        mins, xgc = xga_best[tid]
+        if mins >= 0.75 * 90.0 * n and xgc > 0:
+            dfn[tid] = xgc / n
+        else:
+            dfn[tid] = ga_actual[tid] / n
+
+    if not teams:
+        return {"att": {}, "def": {}, "league_att": LEAGUE_AVG_GOALS,
+                "league_def": LEAGUE_AVG_GOALS, "played": played}
+
+    la = float(np.mean([att[t] for t in teams]))
+    ld = float(np.mean([dfn[t] for t in teams]))
+    if la <= 0 or ld <= 0:
+        log.warning("team strength degenerate (att=%.3f def=%.3f) - falling "
+                    "back to league average; clean sheets will be flat", la, ld)
+        la = la if la > 0 else LEAGUE_AVG_GOALS
+        ld = ld if ld > 0 else LEAGUE_AVG_GOALS
+
+    K = TEAM_PRIOR_MATCHES
+    for tid in teams:
+        n = max(played.get(tid, 0), 0)
+        w = n / (n + K)
+        att[tid] = w * att[tid] + (1 - w) * la
+        dfn[tid] = w * dfn[tid] + (1 - w) * ld
+
+    return {"att": att, "def": dfn, "league_att": la, "league_def": ld,
+            "played": played}
+
+
+def team_cs_probability(bs, fixtures, gw, strengths=None) -> Dict[int, float]:
+    """Expected clean sheets per team in the gameweek, summed over fixtures so a
+    double gameweek correctly yields more than one."""
     teams = {t["id"]: t for t in bs.get("teams", [])}
     if not teams:
         return {}
-    avg_def = float(np.mean([t.get("strength_defence_home", 1000) or 1000
-                             for t in teams.values()]))
-    avg_att = float(np.mean([t.get("strength_attack_home", 1000) or 1000
-                             for t in teams.values()]))
+    st = strengths or team_strengths(bs, fixtures)
+    att, dfn = st["att"], st["def"]
+    la, ld = max(st["league_att"], 1e-6), max(st["league_def"], 1e-6)
+
     out: Dict[int, float] = {}
     for f in fixtures:
         if f.get("event") != gw:
             continue
-        h, a = f.get("team_h"), f.get("team_a")
-        if h not in teams or a not in teams:
+        h, a_ = f.get("team_h"), f.get("team_a")
+        if h not in teams or a_ not in teams:
             continue
-        a_att = (teams[a].get("strength_attack_away", avg_att) or avg_att) / avg_att
-        h_def = (teams[h].get("strength_defence_home", avg_def) or avg_def) / avg_def
-        h_att = (teams[h].get("strength_attack_home", avg_att) or avg_att) / avg_att
-        a_def = (teams[a].get("strength_defence_away", avg_def) or avg_def) / avg_def
-        xgc_h = float(np.clip(LEAGUE_AVG_GOALS * a_att / max(h_def, .5) * .92, .35, 3.2))
-        xgc_a = float(np.clip(LEAGUE_AVG_GOALS * h_att / max(a_def, .5) * 1.08, .35, 3.2))
+        xgc_h = float(np.clip(
+            LEAGUE_AVG_GOALS * (att[a_] / la) * (dfn[h] / ld) * 0.92, 0.20, 3.5))
+        xgc_a = float(np.clip(
+            LEAGUE_AVG_GOALS * (att[h] / la) * (dfn[a_] / ld) * 1.08, 0.20, 3.5))
         out[h] = out.get(h, 0.0) + float(np.exp(-xgc_h))
-        out[a] = out.get(a, 0.0) + float(np.exp(-xgc_a))
+        out[a_] = out.get(a_, 0.0) + float(np.exp(-xgc_a))
     return out
+
+
+def blend_current_minutes(dist: Dict[str, float], el: Dict[str, Any],
+                          games: int) -> Dict[str, float]:
+    """
+    Beta-binomial update of the cold model's bucket distribution using this
+    season's observed starts and minutes.
+
+    The cold model cannot know that a player who missed most of last season has
+    started every game of this one - it is keyed on last season's aggregates
+    and price. Observed starts should dominate from roughly GW3, which is
+    exactly the point at which the previous code kept trusting the prior alone.
+    """
+    if games <= 0:
+        return dist
+    mins = _f(el.get("minutes"))
+    starts = min(_f(el.get("starts")), float(games))
+    K = MINUTES_PRIOR_GAMES
+
+    p60_prior = dist["partial"] + dist["full"]
+    exp_prior = sum(dist[bk] * M.BUCKET_MINUTES[bk] for bk in M.BUCKETS)
+
+    p60 = (starts + K * p60_prior) / (games + K)
+    exp_min = (mins + K * exp_prior) / (games + K)
+
+    mws = (mins / starts) if starts > 0 else 0.0
+    full_share = (0.85 if mws >= 87 else 0.65 if mws >= 80
+                  else 0.45 if mws >= 70 else 0.35)
+    full = p60 * full_share
+    partial = p60 - full
+    rest = max(0.0, 1.0 - p60)
+    sub_minutes = max(
+        0.0, exp_min - (full * 90.0 + partial * M.BUCKET_MINUTES["partial"]))
+    sub = min(rest, sub_minutes / M.BUCKET_MINUTES["sub"])
+    none = max(0.0, rest - sub)
+
+    out = {"none": none, "sub": sub, "partial": partial, "full": full}
+    s = sum(out.values())
+    return {k: v / s for k, v in out.items()} if s > 0 else dist
+
+
+def blend_rate(hist_p90: float, cur_total: float, cur_minutes: float) -> float:
+    """
+    Blend a historical per-90 rate with this season's observed rate.
+
+    The weight is minutes-based: 270 minutes carries about 40% current-season
+    weight, 900 minutes about 69%. Attacking input uses expected goals/assists
+    rather than actual, because three gameweeks of finishing is noise.
+    """
+    if cur_minutes <= 0:
+        return hist_p90
+    cur_p90 = cur_total / cur_minutes * 90.0
+    w = cur_minutes / (cur_minutes + RATE_PRIOR_MINUTES)
+    return w * cur_p90 + (1.0 - w) * hist_p90
 
 
 def build_projections(bs, fixtures, gw, hist, last_season="2025-26"):
@@ -116,7 +273,9 @@ def build_projections(bs, fixtures, gw, hist, last_season="2025-26"):
     dc_tbl = R.defcon_action_rates(hist, last_season)
     dc_tbl = dc_tbl.set_index("pkey") if not dc_tbl.empty else pd.DataFrame()
 
-    cs_prob = team_cs_probability(bs, fixtures, gw)
+    strengths = team_strengths(bs, fixtures)
+    cs_prob = team_cs_probability(bs, fixtures, gw, strengths)
+    played = strengths["played"]
 
     fx_count: Dict[int, int] = {}
     for f in fixtures:
@@ -141,7 +300,9 @@ def build_projections(bs, fixtures, gw, hist, last_season="2025-26"):
         n_fix = fx_count.get(team_id, 0)
         avail = availability_multiplier(el)
 
+        cur_min = _f(el.get("minutes"))
         dist = {b: float(dist_df.iloc[i][b]) for b in M.BUCKETS}
+        dist = blend_current_minutes(dist, el, int(played.get(team_id, 0)))
         if avail < 1.0:
             for b in ("sub", "partial", "full"):
                 dist[b] *= avail
@@ -164,11 +325,16 @@ def build_projections(bs, fixtures, gw, hist, last_season="2025-26"):
             return 0.0 if pd.isna(v) else float(v)
 
         pts_app = dist["sub"] * 1.0 + p_60 * 2.0
-        pts_goals = rate("goals_scored_p90") * mins_share * POINTS_PER_GOAL.get(pos, 4)
-        pts_assists = rate("assists_p90") * mins_share * ASSIST_POINTS
+        g90 = blend_rate(rate("goals_scored_p90"),
+                         _f(el.get("expected_goals")), cur_min)
+        a90 = blend_rate(rate("assists_p90"),
+                         _f(el.get("expected_assists")), cur_min)
+        pts_goals = g90 * mins_share * POINTS_PER_GOAL.get(pos, 4)
+        pts_assists = a90 * mins_share * ASSIST_POINTS
         team_cs = cs_prob.get(team_id, 0.25)
         pts_cs = team_cs * p_60 * POINTS_PER_CS.get(pos, 0)
-        pts_saves = (rate("saves_p90") * mins_share / 3.0) if pos == "GKP" else 0.0
+        pts_saves = ((blend_rate(rate("saves_p90"), _f(el.get("saves")), cur_min)
+                      * mins_share / 3.0) if pos == "GKP" else 0.0)
 
         p_dc = 0.0
         if pos in ("DEF", "MID", "FWD") and not dc_tbl.empty and pk in dc_tbl.index:
@@ -178,10 +344,13 @@ def build_projections(bs, fixtures, gw, hist, last_season="2025-26"):
             col = "cbit_p90" if pos == "DEF" else "cbirt_p90"
             v = d.get(col, np.nan)
             if not pd.isna(v):
+                v = blend_rate(float(v),
+                               _f(el.get("defensive_contribution")), cur_min)
                 p_dc = R.p_defcon(float(v), pos, dist)
         pts_dc = p_dc * 2.0
 
-        pts_bonus = min(rate("bps_p90") * mins_share / 28.0, 1.2) * BONUS_DAMPING
+        bps90 = blend_rate(rate("bps_p90"), _f(el.get("bps")), cur_min)
+        pts_bonus = min(bps90 * mins_share / 28.0, 1.2) * BONUS_DAMPING
 
         per_fix = (pts_app + pts_goals + pts_assists + pts_cs
                    + pts_saves + pts_dc + pts_bonus)
