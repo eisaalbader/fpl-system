@@ -1,8 +1,8 @@
 # GW4 Decision Report
 
-Generated **2026-09-11 18:31 UTC** · Deadline **2026-09-12T12:30:00Z**
+Generated **2026-09-11 18:38 UTC** · Deadline **2026-09-12T12:30:00Z**
 
-🟢 Data is 1.6h old.
+🟢 Data is 1.7h old.
 
 ## 0. Transfer plan — what to do this week
 
@@ -45,7 +45,7 @@ Formation **4-4-2** · Squad cost **£99.3m** · XI expected points (captain dou
 | Guéhi | MCI | 6.0 | 4.77 | 0.96 | 85 | 0.20 | 18.5 | medium |  |
 | Virgil | LIV | 6.5 | 4.55 | 0.97 | 86 | 0.36 | 17.2 | medium |  |
 | B.Fernandes | MUN | 12.0 | 6.10 | 0.98 | 86 | 0.10 | 43.9 | medium |  |
-| Semenyo | MCI | 8.4 | 4.28 | 0.96 | 85 | 0.04 | 16.9 | medium |  |
+| Semenyo | MCI | 8.4 | 4.28 | 0.96 | 85 | 0.04 | 16.8 | medium |  |
 | Anderson | MCI | 6.3 | 4.22 | 0.92 | 75 | 0.45 | 4.4 | medium |  |
 | Rice | ARS | 7.4 | 4.06 | 0.94 | 79 | 0.27 | 13.2 | medium |  |
 | Thiago | BRE | 7.9 | 4.55 | 0.90 | 80 | 0.03 | 11.2 | medium |  |
@@ -167,11 +167,11 @@ Check these before locking in:
 | Murillo | NFO | 5.5 | 4.66 | 0.87 | 78 | 0.39 | 1.6 | medium |  |
 | Milenković | NFO | 5.5 | 4.58 | 0.95 | 85 | 0.38 | 1.6 | medium |  |
 | Virgil | LIV | 6.5 | 4.55 | 0.97 | 86 | 0.36 | 17.2 | medium |  |
-| N.Williams | NFO | 5.0 | 4.50 | 0.93 | 83 | 0.21 | 8.2 | medium |  |
+| N.Williams | NFO | 5.0 | 4.50 | 0.93 | 83 | 0.21 | 8.1 | medium |  |
 | Calafiori | ARS | 5.8 | 4.35 | 0.85 | 70 | 0.04 | 48.7 | medium |  |
-| Bogle | LEE | 4.5 | 4.32 | 0.88 | 72 | 0.06 | 1.9 | medium |  |
 | Van Hecke | TOT | 4.9 | 4.30 | 0.93 | 83 | 0.28 | 6.8 | medium |  |
 | White | ARS | 5.5 | 4.25 | 0.84 | 76 | 0.11 | 7.6 | medium |  |
+| Ballard | SUN | 4.9 | 4.23 | 0.83 | 75 | 0.43 | 3.3 | medium |  |
 
 ### MID
 
@@ -183,9 +183,9 @@ Check these before locking in:
 | Rogers | CHE | 7.6 | 4.87 | 0.95 | 81 | 0.05 | 32.2 | medium |  |
 | Szoboszlai | LIV | 7.0 | 4.76 | 0.93 | 84 | 0.24 | 38.4 | medium |  |
 | Gibbs-White | NFO | 7.9 | 4.68 | 0.94 | 84 | 0.03 | 9.4 | medium |  |
-| Palmer | CHE | 9.7 | 4.58 | 0.94 | 82 | 0.07 | 25.5 | medium |  |
+| Palmer | CHE | 9.7 | 4.58 | 0.94 | 82 | 0.07 | 25.6 | medium |  |
 | Tavernier | BOU | 6.0 | 4.52 | 0.88 | 79 | 0.17 | 3.5 | medium |  |
-| Semenyo | MCI | 8.4 | 4.28 | 0.96 | 85 | 0.04 | 16.9 | medium |  |
+| Semenyo | MCI | 8.4 | 4.28 | 0.96 | 85 | 0.04 | 16.8 | medium |  |
 | Anderson | MCI | 6.3 | 4.22 | 0.92 | 75 | 0.45 | 4.4 | medium |  |
 | Scott | BOU | 6.1 | 4.20 | 0.89 | 80 | 0.45 | 5.4 | medium |  |
 | Stach | LEE | 6.0 | 4.19 | 0.85 | 77 | 0.34 | 2.8 | medium |  |
@@ -198,7 +198,6 @@ Check these before locking in:
 | Thiago | BRE | 7.9 | 4.55 | 0.90 | 80 | 0.03 | 11.2 | medium |  |
 | João Pedro | CHE | 7.7 | 4.53 | 0.86 | 79 | - | 73.2 | medium |  |
 | Isak | LIV | 9.1 | 4.25 | 0.87 | 73 | - | 22.6 | medium |  |
-| Nketiah | CRY | 5.5 | 3.94 | 0.86 | 68 | 0.04 | 0.7 | medium |  |
 | Havertz | ARS | 7.5 | 3.62 | 0.85 | 75 | - | 7.9 | medium |  |
 | Calvert-Lewin | LEE | 6.0 | 3.62 | 0.80 | 70 | - | 22.6 | medium |  |
 | Wissa | NEW | 6.2 | 3.55 | 0.84 | 74 | 0.02 | 17.6 | medium |  |
@@ -206,3 +205,4 @@ Check these before locking in:
 | Kostoulas | BHA | 5.5 | 3.10 | 0.58 | 58 | 0.07 | 0.5 | low |  |
 | Evanilson | BOU | 6.0 | 3.05 | 0.81 | 68 | 0.02 | 3.2 | medium |  |
 | Awoniyi | COV | 5.5 | 2.88 | 0.57 | 52 | - | 0.7 | low |  |
+| Gonzalo | FUL | 6.0 | 2.78 | 0.89 | 81 | - | 4.0 | very low | no prior |
