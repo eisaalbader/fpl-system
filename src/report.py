@@ -123,6 +123,19 @@ def build(gw: int = None) -> Path:
         banned=opt_cfg.get("banned_players") or [],
     )
 
+    # The XI the manager can actually field this week. optimise() above answers
+    # a different question (best possible team at £100m) and must not be
+    # presented as squad advice - see squad.pick_xi.
+    own_result = None
+    if state.get("available"):
+        try:
+            own_ids = {p["id"] for p in state["squad"]}
+            own_result = squad_mod.pick_xi(
+                [p for p in players if p["id"] in own_ids])
+        except Exception as e:
+            log.warning("could not build an XI from the current squad: %s", e)
+    shown = own_result or result
+
     now = datetime.now(timezone.utc)
     top_n = int((settings.get("report") or {}).get("top_n_by_position", 12))
     is_gw1 = (gw == 1)
@@ -219,30 +232,36 @@ def build(gw: int = None) -> Path:
         A("> **Overall confidence: MODERATE.** The minutes and rate models are "
           "real and measured. Everything downstream of them is v1.")
         A("")
-    A("## 1. Recommended XI")
+    A("## 1. Recommended XI" + ("" if own_result else " (fresh build)"))
     A("")
-    A(f"Formation **{result['formation']}** · Squad cost **£{result['total_cost']}m** · "
-      f"XI expected points (captain doubled) **{result['xi_xp']}**")
+    if own_result:
+        A("Your own squad, best legal XI. These are players you already have.")
+    else:
+        A("No squad could be read, so this is the best team £100.0m can buy "
+          "from scratch - not transfer advice.")
     A("")
-    A(_fmt_players(result["xi"], 11))
+    A(f"Formation **{shown['formation']}** · Squad cost **£{shown['total_cost']}m** · "
+      f"XI expected points (captain doubled) **{shown['xi_xp']}**")
+    A("")
+    A(_fmt_players(shown["xi"], 11))
     A("")
 
     A("## 2. Bench (in auto-sub order)")
     A("")
     A("| Order | Player | Team | £ | xP | Why here |")
     A("|---|---|---|--:|--:|---|")
-    gk = result["bench_gk"][0] if result["bench_gk"] else None
+    gk = shown["bench_gk"][0] if shown["bench_gk"] else None
     if gk:
         A(f"| GK | {gk['name']} | {gk['team']} | {gk['cost']:.1f} | {gk['xp']:.2f} | "
           f"Backup keeper — only plays if your starter is dropped |")
-    for i, p in enumerate(result["bench_outfield"], 1):
+    for i, p in enumerate(shown["bench_outfield"], 1):
         A(f"| {i} | {p['name']} | {p['team']} | {p['cost']:.1f} | {p['xp']:.2f} | "
           f"Ordered by expected points |")
     A("")
 
     A("## 3. Captain")
     A("")
-    c, v = result["captain"], result["vice"]
+    c, v = shown["captain"], shown["vice"]
     A(f"**Captain: {c['name']}** ({c['team']}, £{c['cost']:.1f}m)")
     A("")
     A(f"| | xP | Floor (p10) | Ceiling (p90) | Exp mins | Own% |")
@@ -326,11 +345,12 @@ def build(gw: int = None) -> Path:
     A("| Rules engine + drift alerts | ✅ live | now |")
     A("| Squad optimisation (IP) | ✅ live | now |")
     A("| Minutes model (7 seasons, validated) | ✅ live | now |")
+    A("| Current-season minutes / rate blending | ✅ live | now |")
     A("| Shrunk goal / assist / save rates | ✅ live | now |")
-    A("| Clean sheet probability | ✅ v1 (strength-based) | now |")
+    A("| Clean sheet probability | ✅ v2 (season xG-based) | now |")
     A("| Defensive contribution model | ✅ live (1 season of data) | now |")
-    A("| Clean sheet from bookmaker odds | ❌ | GW3 |")
-    A("| BPS rebuilt from 2026/27 components | ❌ | GW4 |")
+    A("| Clean sheet from bookmaker odds | ⚠️ src/odds.py written, not wired in | - |")
+    A("| BPS rebuilt from 2026/27 components | ⚠️ src/bps.py written, not wired in | - |")
     A("| Monte Carlo joint distribution | ❌ | GW5 |")
     A("| Multi-GW transfer planning | ❌ | GW6 |")
     A("| Chip option-value model | ❌ | GW8 |")

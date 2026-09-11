@@ -165,6 +165,57 @@ def optimise(
     }
 
 
+def pick_xi(squad: List[Dict[str, Any]]) -> Dict[str, Any]:
+    """
+    Best legal XI, bench order, captain and vice from a FIXED 15.
+
+    optimise() answers "what is the best team money can buy". This answers
+    "what is the best team you can actually field on Saturday", which is the
+    only one a manager can act on without spending transfers. The report was
+    previously showing the first answer under a heading that implied the
+    second, which is how players the manager does not own ended up in "your" XI.
+    """
+    def by(p):
+        return sorted([x for x in squad if x["pos"] == p], key=lambda x: -x["xp"])
+    gk, df, md, fw = by("GKP"), by("DEF"), by("MID"), by("FWD")
+    if not gk or len(df) < 3 or not fw:
+        raise ValueError("squad does not contain a legal XI")
+
+    best = None
+    for d in range(3, min(5, len(df)) + 1):
+        for m in range(2, min(5, len(md)) + 1):
+            f = 10 - d - m
+            if f < 1 or f > min(3, len(fw)):
+                continue
+            xi = [gk[0]] + df[:d] + md[:m] + fw[:f]
+            tot = sum(p["xp"] for p in xi)
+            if best is None or tot > best[0]:
+                best = (tot, xi)
+    if best is None:
+        raise ValueError("no legal formation available from this squad")
+
+    tot, xi = best
+    ids = {p["id"] for p in xi}
+    bench_out = sorted([p for p in squad
+                        if p["id"] not in ids and p["pos"] != "GKP"],
+                       key=lambda x: -x["xp"])
+    bench_gk = [p for p in squad if p["id"] not in ids and p["pos"] == "GKP"]
+    ranked = sorted(xi, key=lambda x: -x["xp"])
+    captain = ranked[0]
+    vice = ranked[1] if len(ranked) > 1 else ranked[0]
+    return {
+        "squad": squad,
+        "xi": xi,
+        "bench_gk": bench_gk,
+        "bench_outfield": bench_out,
+        "captain": captain,
+        "vice": vice,
+        "total_cost": round(sum(p["cost"] for p in squad), 1),
+        "xi_xp": round(tot + captain["xp"], 2),
+        "formation": _formation(xi),
+    }
+
+
 def _formation(xi: List[Dict[str, Any]]) -> str:
     d = sum(1 for p in xi if p["pos"] == "DEF")
     m = sum(1 for p in xi if p["pos"] == "MID")
