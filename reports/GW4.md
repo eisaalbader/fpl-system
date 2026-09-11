@@ -1,8 +1,8 @@
 # GW4 Decision Report
 
-Generated **2026-09-11 18:38 UTC** · Deadline **2026-09-12T12:30:00Z**
+Generated **2026-09-11 18:48 UTC** · Deadline **2026-09-12T12:30:00Z**
 
-🟢 Data is 1.7h old.
+🟢 Data is 1.9h old.
 
 ## 0. Transfer plan — what to do this week
 
