@@ -206,7 +206,7 @@ def team_cs_probability(bs, fixtures, gw, strengths=None) -> Dict[int, float]:
 
 
 def blend_current_minutes(dist: Dict[str, float], el: Dict[str, Any],
-                          games: int) -> Dict[str, float]:
+                          games: int, prev_minutes: float = None) -> Dict[str, float]:
     """
     Beta-binomial update of the cold model's bucket distribution using this
     season's observed starts and minutes.
@@ -220,7 +220,16 @@ def blend_current_minutes(dist: Dict[str, float], el: Dict[str, Any],
         return dist
     mins = _f(el.get("minutes"))
     starts = min(_f(el.get("starts")), float(games))
+
+    # The prior deserves only as much weight as the evidence behind it. A
+    # forward who managed 694 minutes last season through injury tells us far
+    # less about this season than one who played 3,000, and a new signing tells
+    # us nothing at all - so their priors must yield to observed starts much
+    # faster. Without this, anyone with a disrupted previous season stays stuck
+    # near the cold model's guess no matter how many games he starts.
     K = MINUTES_PRIOR_GAMES
+    if prev_minutes is not None:
+        K *= float(np.clip(_f(prev_minutes) / 1500.0, 0.25, 1.0))
 
     p60_prior = dist["partial"] + dist["full"]
     exp_prior = sum(dist[bk] * M.BUCKET_MINUTES[bk] for bk in M.BUCKETS)
@@ -302,7 +311,8 @@ def build_projections(bs, fixtures, gw, hist, last_season="2025-26"):
 
         cur_min = _f(el.get("minutes"))
         dist = {b: float(dist_df.iloc[i][b]) for b in M.BUCKETS}
-        dist = blend_current_minutes(dist, el, int(played.get(team_id, 0)))
+        dist = blend_current_minutes(dist, el, int(played.get(team_id, 0)),
+                                     feat.iloc[i].get("prev_minutes"))
         if avail < 1.0:
             for b in ("sub", "partial", "full"):
                 dist[b] *= avail
