@@ -73,7 +73,11 @@ def reconcile(replayed_ft: int, picks_by_gw: Dict[int, List[dict]],
         return FTCheck(replayed_ft, None, False,
                        f"picks-diff counts {made} transfers, log has {logged}.")
 
-    earned = min(MAX_BANKED, 1 + (current_gw - 1))
+    # WC/FH weeks neither consume nor earn a free transfer (observed 2026/27:
+    # 3 FT before a GW4 wildcard, 3 FT after it), so they are not earned either.
+    chip_weeks = sum(1 for g, c in chips_used.items()
+                     if c in {"wildcard", "freehit"} and 1 < g <= current_gw)
+    earned = min(MAX_BANKED, current_gw - chip_weeks)
     implied = max(0, min(MAX_BANKED, earned - made))
     agrees = implied == replayed_ft
     return FTCheck(replayed_ft, implied, agrees,
