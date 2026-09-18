@@ -167,9 +167,11 @@ def _free_transfers(entry_id: int, bs: Dict[str, Any],
 
     Rules (2026/27): 1 per GW, bankable up to 5.
 
-    The public API does not expose this directly, so we reconstruct: start at 1
-    after GW1, add 1 per GW, subtract transfers made, clamp to [1, 5]. A
-    wildcard or free hit week does not consume free transfers.
+    The public API does not expose this directly, so we reconstruct:
+    FT(GW2) = 1, then FT(g+1) = min(max(FT(g) - made(g), 0) + 1, 5).
+    A wildcard or free hit week neither consumes nor EARNS a free transfer:
+    observed on the live account in 2026/27 (3 FT before the GW4 wildcard,
+    3 FT after it -- the old replay said 4).
 
     This is a RECONSTRUCTION and can drift. The report tells the user to
     confirm against the FPL app, which shows the true number.
@@ -185,15 +187,13 @@ def _free_transfers(entry_id: int, bs: Dict[str, Any],
     chip_gws = {c.get("event") for c in hist.get("chips", [])
                 if c.get("name") in ("wildcard", "freehit")}
 
-    ft = 1
-    for gw in range(1, current_gw + 1):
-        if gw > 1:
-            ft = min(ft + 1, 5)
+    ft = 1                                    # FT available for GW2
+    for gw in range(2, current_gw + 1):       # every GW whose deadline has passed
         if gw in chip_gws:
-            continue                          # chips don't consume FTs
+            continue                          # WC/FH: FTs kept, none earned
         made = sum(1 for t in transfers if t.get("event") == gw)
-        ft = max(ft - made, 0)
-    return max(1, min(ft, 5))
+        ft = min(max(ft - made, 0) + 1, 5)    # spend first, then earn, then cap
+    return ft
 
 
 def chips_remaining(chips_used: List[str], gw: int) -> Dict[str, bool]:
