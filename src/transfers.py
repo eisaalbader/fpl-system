@@ -87,13 +87,22 @@ def optimise_transfers(
         raise ValueError(f"only {len(pool)} candidates - cannot form a squad")
 
     results = []
+    errors = []
     for n_transfers in range(0, max_transfers + 1):
         try:
             r = _solve(pool, owned, sell, bank, n_transfers, free_transfers,
                        squad_size, max_per_club, formation_min, locked)
             results.append(r)
         except Exception as e:
+            errors.append(e)
             log.warning("no solution for %d transfers: %s", n_transfers, e)
+
+    if not results:
+        # Even "keep the current squad" failed, so this is broken input or a
+        # broken environment (e.g. the PuLP 4 API change), not an FPL outcome.
+        # Raise so the report shows the real error instead of "no feasible squad".
+        last = errors[-1] if errors else "no options were tried"
+        raise RuntimeError(f"transfer optimiser failed for every option; last error: {last}")
 
     results.sort(key=lambda r: r["net_xp"], reverse=True)
     return results
