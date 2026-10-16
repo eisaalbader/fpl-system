@@ -1,0 +1,46 @@
+as_of_utc,player_id,field,old,new
+2026-10-16T19:57:52.871548+00:00,9,status,d,i
+2026-10-16T19:57:52.871548+00:00,9,news,Ankle injury - 75% chance of playing,Ankle injury - Expected back 24 Oct
+2026-10-16T19:57:52.871548+00:00,9,chance_of_playing_next_round,75,0
+2026-10-16T19:57:52.871548+00:00,9,ep_next,0.4,0.0
+2026-10-16T19:57:52.871548+00:00,46,status,a,d
+2026-10-16T19:57:52.871548+00:00,46,news,,Unspecified injury - 75% chance of playing
+2026-10-16T19:57:52.871548+00:00,46,news_added,,2026-10-16T17:30:09.276181Z
+2026-10-16T19:57:52.871548+00:00,46,chance_of_playing_next_round,,75
+2026-10-16T19:57:52.871548+00:00,46,ep_next,1.0,0.8
+2026-10-16T19:57:52.871548+00:00,84,status,i,d
+2026-10-16T19:57:52.871548+00:00,84,news,Calf injury - Unknown return date,Calf injury - 50% chance of playing
+2026-10-16T19:57:52.871548+00:00,84,chance_of_playing_next_round,0,50
+2026-10-16T19:57:52.871548+00:00,328,status,a,d
+2026-10-16T19:57:52.871548+00:00,328,news,,Hamstring injury - 75% chance of playing
+2026-10-16T19:57:52.871548+00:00,328,news_added,2026-10-10T16:00:08.881447Z,2026-10-16T17:30:09.428175Z
+2026-10-16T19:57:52.871548+00:00,328,chance_of_playing_next_round,100,75
+2026-10-16T19:57:52.871548+00:00,328,ep_next,1.5,1.1
+2026-10-16T19:57:52.871548+00:00,198,status,i,d
+2026-10-16T19:57:52.871548+00:00,198,news,Foot injury - Expected back 18 Oct,Foot injury - 50% chance of playing
+2026-10-16T19:57:52.871548+00:00,198,chance_of_playing_next_round,0,50
+2026-10-16T19:57:52.871548+00:00,230,news,Unspecified injury - 75% chance of playing,Leg injury - 75% chance of playing
+2026-10-16T19:57:52.871548+00:00,635,status,a,d
+2026-10-16T19:57:52.871548+00:00,635,news,,Groin injury - 25% chance of playing
+2026-10-16T19:57:52.871548+00:00,635,news_added,,2026-10-16T17:30:09.637224Z
+2026-10-16T19:57:52.871548+00:00,635,chance_of_playing_next_round,,25
+2026-10-16T19:57:52.871548+00:00,635,ep_next,1.0,0.2
+2026-10-16T19:57:52.871548+00:00,617,status,a,i
+2026-10-16T19:57:52.871548+00:00,617,news,,Unspecified injury - Expected back 25 Oct
+2026-10-16T19:57:52.871548+00:00,617,news_added,,2026-10-16T17:30:09.623338Z
+2026-10-16T19:57:52.871548+00:00,617,chance_of_playing_next_round,,0
+2026-10-16T19:57:52.871548+00:00,617,ep_next,3.0,0.0
+2026-10-16T19:57:52.871548+00:00,343,status,i,d
+2026-10-16T19:57:52.871548+00:00,343,news,Back injury - Expected back 18 Oct,Back injury - 50% chance of playing
+2026-10-16T19:57:52.871548+00:00,343,chance_of_playing_next_round,0,50
+2026-10-16T19:57:52.871548+00:00,343,ep_next,0.0,0.2
+2026-10-16T19:57:52.871548+00:00,422,news,Back injury - 75% chance of playing,Back injury - 25% chance of playing
+2026-10-16T19:57:52.871548+00:00,422,chance_of_playing_next_round,75,25
+2026-10-16T19:57:52.871548+00:00,450,status,d,i
+2026-10-16T19:57:52.871548+00:00,450,news,Unspecified injury - 50% chance of playing,Unspecified injury - Expected back 2 Nov
+2026-10-16T19:57:52.871548+00:00,450,chance_of_playing_next_round,50,0
+2026-10-16T19:57:52.871548+00:00,480,status,a,d
+2026-10-16T19:57:52.871548+00:00,480,news,,Muscular injury - 75% chance of playing
+2026-10-16T19:57:52.871548+00:00,480,news_added,2026-08-24T15:30:08.350159Z,2026-10-16T17:30:09.546992Z
+2026-10-16T19:57:52.871548+00:00,480,chance_of_playing_next_round,100,75
+2026-10-16T19:57:52.871548+00:00,480,ep_next,2.0,1.5
