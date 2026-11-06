@@ -1,0 +1,39 @@
+as_of_utc,player_id,field,old,new
+2026-11-06T17:55:09.966931+00:00,31,status,d,a
+2026-11-06T17:55:09.966931+00:00,31,news,Knee injury - 75% chance of playing,
+2026-11-06T17:55:09.966931+00:00,31,chance_of_playing_next_round,75,100
+2026-11-06T17:55:09.966931+00:00,31,ep_next,6.9,9.2
+2026-11-06T17:55:09.966931+00:00,611,status,i,d
+2026-11-06T17:55:09.966931+00:00,611,news,Hamstring injury - Expected back 21 Nov,Hamstring injury - 50% chance of playing
+2026-11-06T17:55:09.966931+00:00,611,chance_of_playing_next_round,0,50
+2026-11-06T17:55:09.966931+00:00,611,ep_next,0.0,0.9
+2026-11-06T17:55:09.966931+00:00,69,status,i,d
+2026-11-06T17:55:09.966931+00:00,69,news,Thigh injury - Expected back 21 Nov,Thigh injury - 75% chance of playing
+2026-11-06T17:55:09.966931+00:00,69,chance_of_playing_next_round,0,75
+2026-11-06T17:55:09.966931+00:00,28,status,i,d
+2026-11-06T17:55:09.966931+00:00,28,news,Head injury - Unknown return date,Head injury - 75% chance of playing
+2026-11-06T17:55:09.966931+00:00,28,chance_of_playing_next_round,0,75
+2026-11-06T17:55:09.966931+00:00,28,ep_next,0.0,2.1
+2026-11-06T17:55:09.966931+00:00,159,status,a,d
+2026-11-06T17:55:09.966931+00:00,159,news,,Calf injury - 75% chance of playing
+2026-11-06T17:55:09.966931+00:00,159,news_added,2026-10-29T22:00:09.933708Z,2026-11-06T15:30:09.180442Z
+2026-11-06T17:55:09.966931+00:00,159,chance_of_playing_next_round,100,75
+2026-11-06T17:55:09.966931+00:00,159,ep_next,2.5,1.9
+2026-11-06T17:55:09.966931+00:00,208,news,Groin injury - Expected back 8 Nov,Groin injury - Expected back 21 Nov
+2026-11-06T17:55:09.966931+00:00,577,news,Calf injury - Expected back 8 Nov,Calf injury - Expected back 21 Nov
+2026-11-06T17:55:09.966931+00:00,131,status,d,i
+2026-11-06T17:55:09.966931+00:00,131,news,Hamstring injury - 50% chance of playing,Hamstring injury - Unknown return date
+2026-11-06T17:55:09.966931+00:00,131,chance_of_playing_next_round,50,0
+2026-11-06T17:55:09.966931+00:00,131,ep_next,1.0,0.0
+2026-11-06T17:55:09.966931+00:00,415,status,i,d
+2026-11-06T17:55:09.966931+00:00,415,news,Hamstring injury - Unknown return date,Hamstring injury - 75% chance of playing
+2026-11-06T17:55:09.966931+00:00,415,chance_of_playing_next_round,0,75
+2026-11-06T17:55:09.966931+00:00,429,status,d,i
+2026-11-06T17:55:09.966931+00:00,429,news,Hip injury - 75% chance of playing,Hip injury - Unknown return date
+2026-11-06T17:55:09.966931+00:00,429,chance_of_playing_next_round,75,0
+2026-11-06T17:55:09.966931+00:00,429,ep_next,0.2,0.0
+2026-11-06T17:55:09.966931+00:00,147,status,i,a
+2026-11-06T17:55:09.966931+00:00,147,news,Calf injury - Unknown return date,
+2026-11-06T17:55:09.966931+00:00,147,chance_of_playing_next_round,0,100
+2026-11-06T17:55:09.966931+00:00,147,ep_next,0.0,0.5
+2026-11-06T17:55:09.966931+00:00,520,news,Knee injury - Expected back 31 Oct,Knee injury - Unknown return date
