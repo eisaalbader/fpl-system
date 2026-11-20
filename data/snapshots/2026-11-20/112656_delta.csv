@@ -1,0 +1,6 @@
+as_of_utc,player_id,field,old,new
+2026-11-20T11:26:56.951649+00:00,12,news,Thigh injury - Unknown return date,Thigh injury - Expected back 20 Dec
+2026-11-20T11:26:56.951649+00:00,19,status,d,i
+2026-11-20T11:26:56.951649+00:00,19,news,Hamstring injury - 75% chance of playing,Hamstring injury - Unknown return date
+2026-11-20T11:26:56.951649+00:00,19,chance_of_playing_next_round,75,0
+2026-11-20T11:26:56.951649+00:00,19,ep_next,0.5,0.0
