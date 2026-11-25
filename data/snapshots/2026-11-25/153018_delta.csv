@@ -1,0 +1,8 @@
+as_of_utc,player_id,field,old,new
+2026-11-25T15:30:18.051329+00:00,367,status,d,i
+2026-11-25T15:30:18.051329+00:00,367,news,Calf injury - 75% chance of playing,Calf injury - Expected back 2 Dec
+2026-11-25T15:30:18.051329+00:00,367,chance_of_playing_next_round,75,0
+2026-11-25T15:30:18.051329+00:00,367,ep_next,1.3,0.0
+2026-11-25T15:30:18.051329+00:00,371,status,d,i
+2026-11-25T15:30:18.051329+00:00,371,news,Foot injury - 75% chance of playing,Foot injury - Unknown return date
+2026-11-25T15:30:18.051329+00:00,371,chance_of_playing_next_round,75,0
